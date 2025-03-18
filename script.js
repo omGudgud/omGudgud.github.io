@@ -3,7 +3,7 @@ let gameState = {
     netBalance: 5,
     inHand: 1,
     trueInHand: 1, // Actual value including decimals
-    winChance: 50,  // Starting at 60%
+    winChance: 60,  // Starting at 60%
     upgradePrice: 20, // Starting price for upgrade
     multiplier: 2, // Starting multiplier value
     multiplierUpgradePrice: 10000, // Price for multiplier upgrade
