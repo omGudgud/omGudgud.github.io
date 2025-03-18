@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="canvas">
+            <div class="balance-display">
+                <div class="balance-item">
+                    <span class="balance-label">Net Balance:</span>
+                    <span id="net-balance"></span>
+                </div>
+                <div class="balance-item">
+                    <span class="balance-label">In Hand:</span>
+                    <span id="in-hand"></span>
+                </div>
+                <div class="balance-item">
+                    <span class="balance-label">Win Chance:</span>
+                    <span id="win-chance"></span>
+                </div>
+                <!-- Hidden element for show-in-hand value -->
+                <div id="show-in-hand-container" style="display: none;">
+                    <span id="show-in-hand"></span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="button-container">
+            <div class="main-buttons">
+                <button id="main-button" class="main-button">2x</button>
+                <button id="one-point-two-button" class="small-button yellow-tint" style="display: none;">1.2x</button>
+            </div>
+            
+            <div class="small-buttons">
+                <button id="add-button" class="small-button">+</button>
+                <button id="add-five-button" class="small-button purple-tint">+5</button>
+                <button id="bank-button" class="small-button">$</button>
+            </div>
+            
+            <div class="upgrade-container">
+                <button id="upgrade-button" class="small-button green-tint">S</button>
+                <div class="price-display">
+                    <span>Price: </span>
+                    <span id="upgrade-price"></span>
+                </div>
+            </div>
+            
+            <div class="multiplier-upgrade-container">
+                <button id="multiplier-upgrade-button" class="multiplier-button blue-tint" disabled>Multiplier +0.5</button>
+                <div class="price-display">
+                    <span>Price: </span>
+                    <span id="multiplier-upgrade-price">10000</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
