@@ -5,29 +5,40 @@
     font-family: Arial, sans-serif;
 }
 
+button:focus{
+    outline: none;
+}
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: #f0f0f0;
+    /* Removed flex centering properties */
+    background-color: #fde4e0;
+    transform: scale(0.8);
+    transform-origin: top center;
+    overflow: hidden /* Set transform origin to top */
+}
+
+/* Class to prevent body scrolling when popup is active */
+.no-scroll {
+    overflow: hidden;
 }
 
 .game-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: center; /* Keep items centered horizontally within the container */
     gap: 30px;
-    width: 100%;
-    max-width: 600px;
+    width: 100%; /* Take full width */
+    /* Removed max-width: 600px; */
+    padding: 20px; /* Add some padding to the container itself */
+    margin-top: 20px; /* Reduced top margin */
 }
 
 .canvas {
-    background-color: white;
+    background-color: rgb(255, 255, 255);
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    width: 100%;
+    width: 125%;
+    position: relative; /* Added for absolute positioning context */
 }
 
 .balance-display {
@@ -49,6 +60,8 @@ body {
     margin-bottom: 5px;
 }
 
+/* Removed .win-chance-container style */
+
 .button-container {
     display: flex;
     flex-direction: column;
@@ -67,20 +80,17 @@ body {
     width: 200px;
     height: 200px;
     border-radius: 50%;
-    background-color: #ffb6c1; /* Pastel red */
-    border: none;
+    background-color: #ff9aa2; /* Slightly more vibrant red */
+    border: none; /* Explicitly no border */
     font-size: 48px;
     font-weight: bold;
     color: white;
     cursor: pointer;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Darker shadow */
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.main-button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
+/* Removed .main-button:hover rule */
 
 .main-button:active {
     transform: scale(0.95);
@@ -96,18 +106,19 @@ body {
     height: 80px;
     border-radius: 50%;
     background-color: white;
-    border: 2px solid black;
+    border: none; /* Removed border */
     font-size: 24px;
     font-weight: bold;
     cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Darker shadow */
     transition: transform 0.2s, box-shadow 0.2s;
+    /* Added flex properties to center content (like images) */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.small-button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-}
+/* Removed .small-button:hover rule */
 
 .small-button:active {
     transform: scale(0.95);
@@ -121,27 +132,70 @@ body {
 }
 
 .purple-tint {
-    background-color: #f0e6ff; /* Light purple tint */
-    border-color: #9370db; /* Medium purple border */
+    background-color: #e0d6ff; /* Slightly more vibrant purple */
 }
 
 .green-tint {
-    background-color: #e6ffe6; /* Light green tint */
-    border-color: #4caf50; /* Medium green border */
+    background-color: #d6ffd6; /* Slightly more vibrant green */
 }
 
 .yellow-tint {
-    background-color: #fffde7; /* Light yellow tint */
-    border-color: #ffd700; /* Gold border */
+    background-color: #d0afff; /* Slightly more vibrant yellow (LemonChiffon) */
     color: #333;
+}
+
+/* Style for the image inside the tenth button */
+#tenth-button img {
+    max-width: 130%; /* Increased size */
+    max-height: 130%; /* Increased size */
+    opacity: 0.25; /* 15% opaque */
+    display: block; /* Ensure image behaves as a block element */
+}
+
+/* Removed .orange-tint style */
+
+.retry-button-style { /* Updated style for the retry button */
+    position: absolute; /* Position relative to canvas */
+    top: 15px; /* Adjust spacing from top */
+    right: 15px; /* Adjust spacing from right */
+    background-color: #8FBC8F; /* DarkSeaGreen - a dark pastel green */
+    border: none; /* Remove border */
+    color: white; /* White symbol */
+    width: 30px; /* Doubled size */
+    height: 30px; /* Doubled size */
+    border-radius: 35%; /* Squircle shape */
+    font-size: 18px; /* Doubled symbol size */
+    font-weight: bold;
+    cursor: pointer;
+    display: flex; /* Center symbol */
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s, background-color 0.2s;
+    padding: 0; /* Remove default padding */
+    line-height: 1; /* Ensure symbol is centered vertically */
+}
+
+/* Removed .retry-button-style:hover rule */
+
+.retry-button-style:active {
+    transform: scale(0.9);
 }
 
 .upgrade-container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
+    flex-direction: row; /* Changed to row */
+    align-items: flex-start; /* Align items to the top */
+    justify-content: center; /* Center the group horizontally */
+    gap: 15px; /* Increased gap for better spacing */
     margin-top: 10px;
+}
+
+/* Styles for the container holding the upgrade button and its price */
+.upgrade-item {
+    display: flex;
+    flex-direction: column; /* Stack button and price vertically */
+    align-items: center;   /* Center items horizontally */
+    gap: 5px;             /* Space between button and price */
 }
 
 .price-display {
@@ -162,20 +216,17 @@ body {
     width: 200px;
     height: 50px;
     border-radius: 25px;
-    background-color: #add8e6; /* Pastel blue */
-    border: 2px solid #5f9ea0; /* Cadet blue border */
+    background-color: #a2d2ff; /* Slightly more vibrant blue */
+    border: none; /* Removed border */
     font-size: 18px;
     font-weight: bold;
     color: #333;
     cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Darker shadow */
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.multiplier-button:hover:not(:disabled) {
-    transform: scale(1.05);
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-}
+/* Removed .multiplier-button:hover:not(:disabled) rule */
 
 .multiplier-button:active:not(:disabled) {
     transform: scale(0.95);
@@ -188,18 +239,24 @@ body {
     box-shadow: none;
 }
 
+/* Explicitly set bank button background to white */
+#bank-button {
+    background-color: white;
+}
+
 .blue-tint {
-    background-color: #add8e6; /* Pastel blue */
-    border-color: #5f9ea0; /* Cadet blue border */
+    background-color: #a2d2ff; /* Slightly more vibrant blue */
 }
 
 .custom-prompt-overlay {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw; /* Use viewport width */
+    height: 150vh; /* Use viewport height */
     background-color: rgba(0, 0, 0, 0.5);
+    transform: scale(1.25);
+    /* Removed transform and transform-origin to simplify positioning */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -214,6 +271,7 @@ body {
     max-width: 500px;
     width: 80%;
     text-align: center;
+    /* Removed transform and transform-origin as overlay transform was removed */
 }
 
 .custom-prompt-message {
@@ -249,10 +307,9 @@ body {
     border: none;
 }
 
-.custom-prompt-yes:hover {
-    background-color: #45a049;
-}
+/* Removed .custom-prompt-yes:hover rule */
 
+/* Removed .custom-prompt-no:hover rule */
 .custom-prompt-no:hover {
     background-color: #d32f2f;
 }
