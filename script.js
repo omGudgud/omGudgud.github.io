@@ -227,8 +227,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Add button event listeners for hold-to-click
-    addButton.addEventListener('mousedown', function() {
+    // Add button event listeners for hold-to-click (Mouse & Touch)
+    function startAddHold(event) {
+        // Prevent default touch actions (like scrolling) and potential mouse event emulation
+        if (event.type === 'touchstart') {
+            event.preventDefault();
+        }
         // Clear any existing timer/interval first
         stopAddInterval();
         // Register the initial click immediately
@@ -240,15 +244,26 @@ document.addEventListener('DOMContentLoaded', function() {
             addInterval = setInterval(handleAddOne, HOLD_INTERVAL_MS);
             // Note: Animation already applied, no need to re-apply here
         }, HOLD_DELAY_MS);
-    });
+    }
+
+    addButton.addEventListener('mousedown', startAddHold);
+    addButton.addEventListener('touchstart', startAddHold);
+
     addButton.addEventListener('mouseup', stopAddInterval);
     addButton.addEventListener('mouseleave', stopAddInterval);
-    // Prevent context menu on right-click hold
+    addButton.addEventListener('touchend', stopAddInterval);
+    addButton.addEventListener('touchcancel', stopAddInterval);
+
+    // Prevent context menu on right-click hold (mouse only)
     addButton.addEventListener('contextmenu', function(e) { e.preventDefault(); });
 
 
-    // Add Five button event listeners for hold-to-click
-    addFiveButton.addEventListener('mousedown', function() {
+    // Add Five button event listeners for hold-to-click (Mouse & Touch)
+    function startAddFiveHold(event) {
+        // Prevent default touch actions (like scrolling) and potential mouse event emulation
+        if (event.type === 'touchstart') {
+            event.preventDefault();
+        }
         // Clear any existing timer/interval first
         stopAddFiveInterval();
         // Register the initial click immediately
@@ -260,10 +275,17 @@ document.addEventListener('DOMContentLoaded', function() {
             addFiveInterval = setInterval(handleAddFive, HOLD_INTERVAL_MS);
             // Note: Animation already applied, no need to re-apply here
         }, HOLD_DELAY_MS);
-    });
+    }
+
+    addFiveButton.addEventListener('mousedown', startAddFiveHold);
+    addFiveButton.addEventListener('touchstart', startAddFiveHold);
+
     addFiveButton.addEventListener('mouseup', stopAddFiveInterval);
     addFiveButton.addEventListener('mouseleave', stopAddFiveInterval);
-    // Prevent context menu on right-click hold
+    addFiveButton.addEventListener('touchend', stopAddFiveInterval);
+    addFiveButton.addEventListener('touchcancel', stopAddFiveInterval);
+
+    // Prevent context menu on right-click hold (mouse only)
     addFiveButton.addEventListener('contextmenu', function(e) { e.preventDefault(); });
 
 
