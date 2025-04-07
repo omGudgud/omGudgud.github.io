@@ -10,10 +10,11 @@ button:focus{
 }
 body {
     /* Removed flex centering properties */
-    background-color: #fde4e0;
+    background-color: #fce9e7;
     transform: scale(0.8);
     transform-origin: top center;
-    overflow: hidden /* Set transform origin to top */
+    overflow: hidden; /* Set transform origin to top */
+    color: #383838; /* Set default text color to softer black */
 }
 
 /* Class to prevent body scrolling when popup is active */
@@ -27,24 +28,35 @@ body {
     align-items: center; /* Keep items centered horizontally within the container */
     gap: 30px;
     width: 100%; /* Take full width */
-    /* Removed max-width: 600px; */
-    padding: 20px; /* Add some padding to the container itself */
+    /* max-width: 600px; Removed maximum width limit */
+    padding: 20px 0; /* Keep vertical padding, remove horizontal */
     margin-top: 20px; /* Reduced top margin */
+    margin-left: auto; /* Center container horizontally */
+    margin-right: auto; /* Center container horizontally */
+    transition: transform 0.3s ease, filter 0.3s ease; /* Add transition for shrinking */
+}
+
+/* Style for when the game container is shrunk by the overlay */
+.game-container-shrunk {
+    transform: scale(0.8);
+    filter: blur(2px);
+    pointer-events: none; /* Prevent interaction with shrunk game */
 }
 
 .canvas {
     background-color: rgb(255, 255, 255);
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    width: 125%;
+    padding: 20px 5px; /* Keep vertical, add horizontal padding */
+    width: 100%; /* Ensure width is 100% */
     position: relative; /* Added for absolute positioning context */
 }
 
 .balance-display {
     display: flex;
-    justify-content: space-around;
-    font-size: 24px;
+    /* justify-content: space-around; Removed */
+    /* font-size: 24px; Replaced with clamp for fluid sizing */
+    font-size: clamp(12px, 6.2vw, 24px); /* Min 12px, Preferred 4% viewport width, Max 24px */
     margin-bottom: 10px;
 }
 
@@ -52,7 +64,9 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 10px;
+    padding: 5px;
+    flex: 1; /* Make each item take equal space */
+    text-align: center; /* Center text within the item */
 }
 
 .balance-label {
@@ -68,6 +82,7 @@ body {
     align-items: center;
     gap: 20px;
     width: 100%;
+    padding: 0 20px; /* Add horizontal padding to indent buttons */
 }
 
 .main-buttons {
@@ -156,14 +171,14 @@ body {
 
 .retry-button-style { /* Updated style for the retry button */
     position: absolute; /* Position relative to canvas */
-    top: 15px; /* Adjust spacing from top */
-    right: 15px; /* Adjust spacing from right */
+    top: 0px; /* Adjust spacing from top */
+    right: 0px; /* Adjust spacing from right */
     background-color: #8FBC8F; /* DarkSeaGreen - a dark pastel green */
     border: none; /* Remove border */
     color: white; /* White symbol */
     width: 30px; /* Doubled size */
     height: 30px; /* Doubled size */
-    border-radius: 35%; /* Squircle shape */
+    border-radius: 8px; /* Add rounded corners */
     font-size: 18px; /* Doubled symbol size */
     font-weight: bold;
     cursor: pointer;
@@ -312,4 +327,104 @@ body {
 /* Removed .custom-prompt-no:hover rule */
 .custom-prompt-no:hover {
     background-color: #d32f2f;
+}
+
+/* Removed media query as clamp() handles responsiveness */
+
+/* Tutorial Overlay Styles */
+.tutorial-overlay {
+    position: fixed; /* Cover the whole screen */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 120%;
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
+    display: none; /* Hidden by default */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it's on top */
+    padding: 20px; /* Add padding for smaller screens */
+    box-sizing: border-box;
+    transform: scale(1.25); /* Scale the overlay itself */
+}
+
+.tutorial-content {
+    background-color: white;
+    padding: 20px; /* Revert padding change */
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    max-width: 700px; /* Limit content width */
+    width: 100%;
+    position: relative; /* For positioning the close button */
+    max-height: 70vh; /* Limit height and allow scrolling */
+    overflow-y: auto; /* Enable vertical scrolling if content overflows */
+    text-align: left; /* Align text to the left */
+}
+
+.tutorial-content h2, .tutorial-content h3 {
+    text-align: center; /* Center headings */
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.tutorial-content p {
+    margin-bottom: 10px;
+    line-height: 1.6;
+    color: #555;
+    font-weight: bold; /* Make paragraph text bold */
+}
+
+/* Ensure list items are also bold */
+.tutorial-content li {
+    margin-bottom: 10px; /* Add spacing between list items */
+    font-weight: bold;
+    line-height: 1.6; /* Match paragraph line height */
+    color: #555; /* Match paragraph color */
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 28px; /* Make it larger */
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+.close-button:hover {
+    color: #333;
+}
+
+.tutorial-image {
+    display: block; /* Center image */
+    max-width: 100%; /* Ensure image fits */
+    height: auto;
+    margin: 20px auto; /* Add space around image */
+    border: 1px solid #eee;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Style the scrollbar within the tutorial content */
+.tutorial-content::-webkit-scrollbar {
+    width: 8px; /* Width of the scrollbar */
+}
+
+.tutorial-content::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Color of the track */
+    border-radius: 10px; /* Rounded track */
+    margin: 5px 0; /* Add vertical margin to shorten the track visually */
+}
+
+.tutorial-content::-webkit-scrollbar-thumb {
+    background: #bbb; /* Color of the scroll thumb */
+    border-radius: 10px; /* Rounded thumb */
+}
+
+.tutorial-content::-webkit-scrollbar-thumb:hover {
+    background: #888; /* Darker thumb on hover */
 }

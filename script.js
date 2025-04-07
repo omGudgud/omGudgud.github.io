@@ -1,21 +1,51 @@
 // Game state stored in JSON format
-// Game state stored in JSON format
-let gameState = {
-    netBalance: 5,
-    inHand: 1,
+const STORAGE_KEY = 'buttonGameState';
+
+// Function to load game state from localStorage
+function loadGameState() {
+    const savedState = localStorage.getItem(STORAGE_KEY);
+    if (savedState) {
+        try {
+            return JSON.parse(savedState);
+        } catch (e) {
+            console.error("Error parsing saved game state:", e);
+            // Fallback to initial state if parsing fails
+            return getInitialGameState();
+        }
+    }
+    return getInitialGameState(); // Return initial state if nothing is saved
+}
+
+// Function to save game state to localStorage
+function saveGameState(state) {
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch (e) {
+        console.error("Error saving game state:", e);
+    }
+}
+
+// Function to get the initial game state structure
+function getInitialGameState() {
+    return {
+        netBalance: 5,
+        inHand: 1,
     trueInHand: 1, // Actual value including decimals
     winChance: 60,  // Starting at 60% (Initial value adjusted, cap is 85%)
     upgradePrice: 20, // Starting price for upgrade (will be replaced by dynamic calculation)
     multiplier: 2, // Starting multiplier value
     multiplierUpgradePrice: 10000, // Price for multiplier upgrade (will be recalculated on first possible upgrade)
-    upgradeIteration: 0 // Counter for the win chance upgrade button clicks
-    // Removed level property
-};
+        upgradeIteration: 0 // Counter for the win chance upgrade button clicks
+        // Removed level property
+    };
+}
 
-// Store the initial state for resetting (ensure initial state also respects cap if needed)
-gameState.winChance = Math.min(gameState.winChance, 85); // Apply cap to initial state just in case
-// Ensure upgradeIteration is included in the initial state copy
-const initialGameState = JSON.parse(JSON.stringify(gameState));
+// Initialize game state by loading or using defaults
+let gameState = loadGameState();
+
+// Store the initial state structure for resetting (ensure initial state also respects cap if needed)
+const initialGameStateStructure = getInitialGameState();
+initialGameStateStructure.winChance = Math.min(initialGameStateStructure.winChance, 85); // Apply cap to initial state structure
 
 
 // DOM elements
@@ -36,16 +66,23 @@ document.addEventListener('DOMContentLoaded', function() {
     const retryButton = document.getElementById('retry-button'); // Get the retry button
     const tenthButton = document.getElementById('tenth-button'); // Get the tenth button
 
+    // Tutorial Overlay Elements
+    const tutorialOverlay = document.getElementById('tutorial-overlay');
+    const closeTutorialButton = document.getElementById('close-tutorial');
+
     // Variables to manage hold-to-click intervals
     let addInterval = null; // Will hold either TimeoutID or IntervalID
     let addFiveInterval = null; // Will hold either TimeoutID or IntervalID
     const HOLD_DELAY_MS = 350; // Initial delay before rapid clicks start
     const HOLD_INTERVAL_MS = 40; // 25 clicks per second (1000ms / 25 = 40ms)
 
-    // Update the display
+    // Update the display and save state
     function updateDisplay() {
-        // Enforce the win chance cap
+        // Enforce the win chance cap before saving/displaying
         gameState.winChance = Math.min(gameState.winChance, 85);
+
+        // Save the current state *before* updating the display elements
+        saveGameState(gameState);
 
         // Update all display values from the game state
         netBalanceElement.textContent = Math.floor(gameState.netBalance);
@@ -84,6 +121,25 @@ document.addEventListener('DOMContentLoaded', function() {
         // Enable multiplier upgrade button only if win probability is >= 80% and net balance >= (potentially capped at 1B) multiplierUpgradePrice
         multiplierUpgradeButton.disabled = !(gameState.winChance >= 80 && gameState.netBalance >= displayMultiplierPrice); // displayMultiplierPrice already capped above
     }
+
+    // --- Tutorial Overlay Logic ---
+    if (tutorialOverlay && closeTutorialButton) {
+        // Show the tutorial overlay when the page loads
+        tutorialOverlay.style.display = 'flex'; // Use flex as defined in CSS
+
+        // Add event listener to the close button
+        closeTutorialButton.addEventListener('click', function() {
+            tutorialOverlay.style.display = 'none';
+        });
+
+        // Optional: Close overlay if user clicks outside the content box
+        tutorialOverlay.addEventListener('click', function(event) {
+            if (event.target === tutorialOverlay) { // Check if the click is on the overlay itself
+                tutorialOverlay.style.display = 'none';
+            }
+        });
+    }
+    // --- End Tutorial Overlay Logic ---
 
     // Main button click handler - multiplier button
     mainButton.addEventListener('click', function() {
@@ -484,11 +540,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Retry button click handler - reset game state
+    // Retry button click handler - reset game state and clear storage
     retryButton.addEventListener('click', function() {
         showCustomPrompt("Are you sure you want to reset all progress and start over?", function() {
-            // Yes clicked - reset the game state
-            gameState = JSON.parse(JSON.stringify(initialGameState)); // Reset to initial state (includes upgradeIteration: 0)
+            // Yes clicked - reset the game state variable
+            gameState = JSON.parse(JSON.stringify(initialGameStateStructure)); // Reset to initial state structure
+
+            // Clear the saved state from localStorage
+            localStorage.removeItem(STORAGE_KEY);
 
             // Visual feedback
             retryButton.style.transform = 'scale(0.9)';

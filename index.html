@@ -12,15 +12,16 @@
             <button id="retry-button" class="retry-button-style">↻</button> <!-- Moved retry button here -->
             <div class="balance-display">
                 <div class="balance-item">
-                    <span class="balance-label">Net Balance:</span>
+                    <span class="balance-label">Net Balance</span>
                     <span id="net-balance"></span>
                 </div>
                 <div class="balance-item">
-                    <span class="balance-label">In Hand:</span>
+                    <span class="balance-label">bet amount</span>
+                     <!-- Add second <br> for extra line space -->
                     <span id="in-hand"></span>
                 </div>
                 <div class="balance-item">
-                    <span class="balance-label">Win Chance:</span>
+                    <span class="balance-label">Win Chance</span>
                     <!-- Removed win-chance-container -->
                     <span id="win-chance"></span>
                 </div>
@@ -67,5 +68,24 @@
     </div>
 
     <script src="script.js"></script>
+
+    <!-- Tutorial Overlay -->
+    <div id="tutorial-overlay" class="tutorial-overlay">
+        <div class="tutorial-content">
+            <button id="close-tutorial" class="close-button">&times;</button>
+            <h2>Tutorial</h2>
+            <p>Hello, this is a small tutorial before you dive into the game.</p>
+            <ul>
+                <li>The game is a simple 'double or nothing' game with an incremental twist. Each time you press the 2x button, you either lose money or double your betting amount.</li>
+                <li>The win percentage is given in the top right corner. You can increase the win percentage by buying more.</li>
+                <li>Once your win percentage is higher than 80%, you can buy +0.5 multiplier. But beware, it will reset the progress and you will start with a lower win percentage.</li>
+                <li>Your objective is simple: increase the multiplier as much as you can.</li>
+                <li>The game officially ends when you unlock the 4.5x multiplier.</li>
+            </ul>
+            <h3><br>Buttons</h3>
+            <img src="tutorial.png" alt="Button descriptions" class="tutorial-image">
+            <p>(you can skim rest all and just look at this, lol)</p>
+        </div>
+    </div>
 </body>
 </html>
