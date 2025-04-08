@@ -1,11 +1,13 @@
 // Game state stored in JSON format
 const STORAGE_KEY = 'buttonGameState';
+// Removed TUTORIAL_SHOWN_KEY as it's no longer needed
 
 // Function to load game state from localStorage
 function loadGameState() {
     const savedState = localStorage.getItem(STORAGE_KEY);
     if (savedState) {
         try {
+            // No need to handle tutorialShown here anymore
             return JSON.parse(savedState);
         } catch (e) {
             console.error("Error parsing saved game state:", e);
@@ -28,6 +30,7 @@ function saveGameState(state) {
 // Function to get the initial game state structure
 function getInitialGameState() {
     return {
+        // Removed tutorialShown flag from main game state
         netBalance: 5,
         inHand: 1,
     trueInHand: 1, // Actual value including decimals
@@ -65,6 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const multiplierUpgradePriceElement = document.getElementById('multiplier-upgrade-price');
     const retryButton = document.getElementById('retry-button'); // Get the retry button
     const tenthButton = document.getElementById('tenth-button'); // Get the tenth button
+    const infoButton = document.getElementById('info-button'); // Get the new info button
 
     // Tutorial Overlay Elements
     const tutorialOverlay = document.getElementById('tutorial-overlay');
@@ -123,19 +127,25 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // --- Tutorial Overlay Logic ---
-    if (tutorialOverlay && closeTutorialButton) {
-        // Show the tutorial overlay when the page loads
-        tutorialOverlay.style.display = 'flex'; // Use flex as defined in CSS
+    if (tutorialOverlay && closeTutorialButton && infoButton) {
+        // Function to close the tutorial
+        function closeTutorial() {
+            tutorialOverlay.style.display = 'none';
+            // No longer need to set localStorage item
+        }
+
+        // Add event listener to the info button to show the tutorial
+        infoButton.addEventListener('click', function() {
+            tutorialOverlay.style.display = 'flex'; // Show the overlay
+        });
 
         // Add event listener to the close button
-        closeTutorialButton.addEventListener('click', function() {
-            tutorialOverlay.style.display = 'none';
-        });
+        closeTutorialButton.addEventListener('click', closeTutorial);
 
         // Optional: Close overlay if user clicks outside the content box
         tutorialOverlay.addEventListener('click', function(event) {
             if (event.target === tutorialOverlay) { // Check if the click is on the overlay itself
-                tutorialOverlay.style.display = 'none';
+                closeTutorial();
             }
         });
     }

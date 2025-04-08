@@ -177,8 +177,7 @@ body {
     border: none; /* Remove border */
     color: white; /* White symbol */
     width: 30px; /* Doubled size */
-    height: 30px; /* Doubled size */
-    border-radius: 8px; /* Add rounded corners */
+    height: 30px; /* Doubled size */ /* Add rounded corners */
     font-size: 18px; /* Doubled symbol size */
     font-weight: bold;
     cursor: pointer;
@@ -190,9 +189,35 @@ body {
     line-height: 1; /* Ensure symbol is centered vertically */
 }
 
+.info-button-style { /* Style for the new info button */
+    position: absolute;
+    top: 0px; /* Same spacing as retry */
+    left: 0px; /* Position on the left */
+    background-color: #ffffff; /* SkyBlue - a light pastel blue */
+    border: none;
+    color: white;
+    width: 30px; /* Same size as retry */
+    height: 30px; /* Same size as retry */ /* Same rounded corners */
+    font-size: 18px; /* Same symbol size */
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s, background-color 0.2s;
+    padding: 0;
+    line-height: 1;
+    /* Add text shadow to simulate a border */
+    text-shadow:
+        1px 1px 0 #000,
+       -1px -1px 0 #000,
+        1px -1px 0 #000,
+       -1px 1px 0 #000;
+}
+
 /* Removed .retry-button-style:hover rule */
 
-.retry-button-style:active {
+.retry-button-style:active, .info-button-style:active { /* Apply active style to both */
     transform: scale(0.9);
 }
 
