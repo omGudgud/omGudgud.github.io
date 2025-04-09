@@ -195,7 +195,7 @@ body {
     left: 0px; /* Position on the left */
     background-color: #ffffff; /* SkyBlue - a light pastel blue */
     border: none;
-    color: white;
+    color: rgb(0, 0, 0);
     width: 30px; /* Same size as retry */
     height: 30px; /* Same size as retry */ /* Same rounded corners */
     font-size: 18px; /* Same symbol size */
@@ -207,12 +207,6 @@ body {
     transition: transform 0.2s, background-color 0.2s;
     padding: 0;
     line-height: 1;
-    /* Add text shadow to simulate a border */
-    text-shadow:
-        1px 1px 0 #000,
-       -1px -1px 0 #000,
-        1px -1px 0 #000,
-       -1px 1px 0 #000;
 }
 
 /* Removed .retry-button-style:hover rule */
