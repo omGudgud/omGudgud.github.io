@@ -198,7 +198,7 @@ body {
     color: rgb(0, 0, 0);
     width: 30px; /* Same size as retry */
     height: 30px; /* Same size as retry */ /* Same rounded corners */
-    font-size: 18px; /* Same symbol size */
+    font-size: 24px; /* Same symbol size */
     font-weight: bold;
     cursor: pointer;
     display: flex;
