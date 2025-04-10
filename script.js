@@ -34,7 +34,7 @@ function getInitialGameState() {
         netBalance: 5,
         inHand: 1,
     trueInHand: 1, // Actual value including decimals
-    winChance: 60,  // Starting at 60% (Initial value adjusted, cap is 85%)
+    winChance: 85,  // Starting at 60% (Initial value adjusted, cap is 85%)
     upgradePrice: 20, // Starting price for upgrade (will be replaced by dynamic calculation)
     multiplier: 2, // Starting multiplier value
     multiplierUpgradePrice: 10000, // Price for multiplier upgrade (will be recalculated on first possible upgrade)
@@ -77,6 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Variables to manage hold-to-click intervals
     let addInterval = null; // Will hold either TimeoutID or IntervalID
     let addFiveInterval = null; // Will hold either TimeoutID or IntervalID
+    let addTenthInterval = null; // Interval for the tenth button
     const HOLD_DELAY_MS = 350; // Initial delay before rapid clicks start
     const HOLD_INTERVAL_MS = 40; // 25 clicks per second (1000ms / 25 = 40ms)
 
@@ -158,7 +159,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Visual feedback for zero balance
             mainButton.style.backgroundColor = '#cccccc'; // Gray
             setTimeout(() => {
-                mainButton.style.backgroundColor = '#ffb6c1'; // Back to pastel red
+                mainButton.style.backgroundColor = '#ff9aa2'; // Back to original CSS color
             }, 300);
             return;
         }
@@ -173,7 +174,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Visual feedback for success
             mainButton.style.backgroundColor = '#90ee90'; // Light green
             setTimeout(() => {
-                mainButton.style.backgroundColor = '#ffb6c1'; // Back to pastel red
+                mainButton.style.backgroundColor = '#ff9aa2'; // Back to original CSS color
             }, 300);
         } else {
             // Lose chance percent to wipe out in-hand value
@@ -182,7 +183,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Visual feedback for loss
             mainButton.style.backgroundColor = '#ff6347'; // Tomato red
             setTimeout(() => {
-                mainButton.style.backgroundColor = '#ffb6c1'; // Back to pastel red
+                mainButton.style.backgroundColor = '#ff9aa2'; // Back to original CSS color
             }, 300);
         }
         
@@ -271,6 +272,31 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Function to handle adding 10%
+    function handleAddTenth() {
+        const amountToTransfer = Math.floor(gameState.netBalance / 10);
+
+        if (amountToTransfer > 0 && gameState.netBalance >= amountToTransfer) {
+            gameState.netBalance -= amountToTransfer;
+            gameState.trueInHand += amountToTransfer;
+            updateDisplay();
+            // Optional: Add subtle feedback for repeated clicks if desired
+            // tenthButton.style.opacity = '0.8';
+            // setTimeout(() => { tenthButton.style.opacity = '1'; }, 50);
+        } else {
+            // Stop interval if balance runs out or transfer is 0
+            clearInterval(addTenthInterval);
+            addTenthInterval = null;
+            // Visual feedback for insufficient funds or zero transfer
+            tenthButton.style.backgroundColor = '#ffcccc'; // Light red
+            setTimeout(() => {
+                // Reset to its specific purple tint
+                tenthButton.style.backgroundColor = '#d0afff'; // Matches CSS
+            }, 300);
+        }
+    }
+
+
     // Function to stop the add interval (handles both timeout and interval)
     function stopAddInterval() {
         if (addInterval) {
@@ -290,6 +316,17 @@ document.addEventListener('DOMContentLoaded', function() {
             addFiveInterval = null;
             // Restore visual state if needed
             addFiveButton.style.transform = 'scale(1)';
+        }
+    }
+
+    // Function to stop the add tenth interval (handles both timeout and interval)
+    function stopAddTenthInterval() {
+        if (addTenthInterval) {
+            clearTimeout(addTenthInterval); // Clear the initial delay timeout if it's running
+            clearInterval(addTenthInterval); // Clear the rapid click interval if it's running
+            addTenthInterval = null;
+            // Restore visual state if needed
+            tenthButton.style.transform = 'scale(1)';
         }
     }
 
@@ -355,30 +392,36 @@ document.addEventListener('DOMContentLoaded', function() {
     addFiveButton.addEventListener('contextmenu', function(e) { e.preventDefault(); });
 
 
-    // Tenth button click handler - transfer 1/10th of net balance to in-hand
-    tenthButton.addEventListener('click', function() {
-        const amountToTransfer = Math.floor(gameState.netBalance / 10);
-
-        if (amountToTransfer > 0 && gameState.netBalance >= amountToTransfer) {
-            gameState.netBalance -= amountToTransfer;
-            gameState.trueInHand += amountToTransfer;
-
-            // Visual feedback
-            tenthButton.style.transform = 'scale(0.9)';
-            setTimeout(() => {
-                tenthButton.style.transform = 'scale(1)';
-            }, 100);
-
-            updateDisplay();
-        } else {
-            // Visual feedback for insufficient funds or zero transfer amount
-            tenthButton.style.backgroundColor = '#ffcccc'; // Light red
-            setTimeout(() => {
-                // Reset to its specific yellow tint
-                tenthButton.style.backgroundColor = '#d0afff'; // LemonChiffon (matches CSS)
-            }, 300);
+    // Tenth button event listeners for hold-to-click (Mouse & Touch)
+    function startAddTenthHold(event) {
+        // Prevent default touch actions (like scrolling) and potential mouse event emulation
+        if (event.type === 'touchstart') {
+            event.preventDefault();
         }
-    });
+        // Clear any existing timer/interval first
+        stopAddTenthInterval();
+        // Register the initial click immediately
+        handleAddTenth();
+        tenthButton.style.transform = 'scale(0.9)'; // Apply visual feedback immediately
+        // Start the initial delay timeout *after* the first click
+        addTenthInterval = setTimeout(() => {
+            // Start the rapid click interval (no need for another immediate click here)
+            addTenthInterval = setInterval(handleAddTenth, HOLD_INTERVAL_MS);
+            // Note: Animation already applied, no need to re-apply here
+        }, HOLD_DELAY_MS);
+    }
+
+    tenthButton.addEventListener('mousedown', startAddTenthHold);
+    tenthButton.addEventListener('touchstart', startAddTenthHold);
+
+    tenthButton.addEventListener('mouseup', stopAddTenthInterval);
+    tenthButton.addEventListener('mouseleave', stopAddTenthInterval);
+    tenthButton.addEventListener('touchend', stopAddTenthInterval);
+    tenthButton.addEventListener('touchcancel', stopAddTenthInterval);
+
+    // Prevent context menu on right-click hold (mouse only)
+    tenthButton.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+
 
     // Bank button click handler - transfer all from in-hand to net
     bankButton.addEventListener('click', function() {
