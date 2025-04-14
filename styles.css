@@ -504,13 +504,13 @@ body {
     display: flex; /* Use flex for card layout */
     justify-content: center; /* Center cards horizontally */
     align-items: center; /* Center cards vertically */
-    gap: 20px; /* Space between cards */
+    gap: 10px; /* Space between cards */
     /* Responsive width constraint - handled by card sizing */
 }
 
 .multiplier-increase-cards {
     display: flex;
-    gap: 20px; /* Space between cards */
+    gap: 10px; /* Space between cards */
     justify-content: center;
     align-items: center;
     width: 100%; /* Take full width of container */
@@ -519,7 +519,7 @@ body {
 
 .multiplier-increase-card {
     background-color: #ffcccc; /* Light red */
-    border-radius: 8px;
+    border-radius: 10px;
     cursor: pointer;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -527,7 +527,7 @@ body {
 
     /* Responsive sizing using clamp and vw */
     /* Base width: 15vw, Min width: 80px, Max width: 150px */
-    width: clamp(70px, 15vw, 150px);
+    width: clamp(90px, 15vw, 150px);
 
     /* Ensure height adjusts based on aspect ratio */
     height: auto; /* Let aspect-ratio control height */
