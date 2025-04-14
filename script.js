@@ -34,7 +34,7 @@ function getInitialGameState() {
         netBalance: 5,
         inHand: 1,
     trueInHand: 1, // Actual value including decimals
-    winChance: 85,  // Starting at 60% (Initial value adjusted, cap is 85%)
+    winChance: 60,  // Starting at 60% (Initial value adjusted, cap is 85%)
     upgradePrice: 20, // Starting price for upgrade (will be replaced by dynamic calculation)
     multiplier: 2, // Starting multiplier value
     multiplierUpgradePrice: 10000, // Price for multiplier upgrade (will be recalculated on first possible upgrade)
