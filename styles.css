@@ -498,6 +498,7 @@ body {
     background-color: transparent; /* Make container transparent */
     padding: 20px;
     border-radius: 10px;
+    width: 80vw;
     /* Removed box-shadow as container is transparent */
     /* max-width: 90vw; /* Limit width relative to viewport */
     /* width: auto; /* Allow content to determine width up to max */
@@ -527,7 +528,7 @@ body {
 
     /* Responsive sizing using clamp and vw */
     /* Base width: 15vw, Min width: 80px, Max width: 150px */
-    width: clamp(90px, 15vw, 150px);
+    width: clamp(100px, 15vw, 180px);
 
     /* Ensure height adjusts based on aspect ratio */
     height: auto; /* Let aspect-ratio control height */
@@ -549,8 +550,8 @@ body {
 /* Style for images within the cards */
 .multiplier-increase-card img {
     display: block; /* Remove extra space below image */
-    max-width: 115%;   /* Limit image width relative to card */
-    max-height: 115%; /* Limit image height relative to card */
+    max-width: 110%;   /* Limit image width relative to card */
+    max-height: 110%; /* Limit image height relative to card */
     height: auto;     /* Maintain aspect ratio */
     margin-bottom: 5px; /* Space between image and text */
 }

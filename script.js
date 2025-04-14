@@ -762,7 +762,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Card 1: Permanent Win Chance Bonus (+2%)
     function handleCard1Click() {
-        gameState.permanentWinChanceBonus = (gameState.permanentWinChanceBonus || 0) + 2;
+        gameState.permanentWinChanceBonus = (gameState.permanentWinChanceBonus || 0) + 1.5;
         // Optional: Cap the bonus if needed, e.g., gameState.permanentWinChanceBonus = Math.min(gameState.permanentWinChanceBonus, 50);
         console.log(`Card 1 Clicked: Permanent Win Chance Bonus increased to ${gameState.permanentWinChanceBonus}%`);
         closeMultiplierPromptAndSave();
@@ -770,7 +770,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Card 2: Loss Protection Chance (+10%)
     function handleCard2Click() {
-        gameState.lossProtectionChance = Math.min((gameState.lossProtectionChance || 0) + 10, 100); // Cap at 100%
+        gameState.lossProtectionChance = Math.min((gameState.lossProtectionChance || 0) + 5, 20); // Cap at 100%
         console.log(`Card 2 Clicked: Loss Protection Chance increased to ${gameState.lossProtectionChance}%`);
         closeMultiplierPromptAndSave();
     }
