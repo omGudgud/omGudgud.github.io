@@ -3,6 +3,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: Arial, sans-serif;
+    -webkit-tap-highlight-color: transparent !important;
 }
 
 
@@ -474,3 +475,103 @@ body {
 .tutorial-content::-webkit-scrollbar-thumb:hover {
     background: #888; /* Darker thumb on hover */
 }
+
+/* --- New Multiplier Increase Prompt Styles --- */
+
+.multiplier-increase-prompt-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 120vh; /* Cover full viewport */
+    background-color: rgba(0, 0, 0, 0.6); /* Slightly darker overlay */
+    display: none; /* Hidden by default */
+    justify-content: center;
+    align-items: center;
+    z-index: 1010; /* Ensure it's above other elements */
+    padding: 15px; /* Padding for spacing on small screens */
+    box-sizing: border-box;
+    transform: scale(1.25); /* Match other overlays */
+}
+
+.multiplier-increase-prompt-container {
+    background-color: transparent; /* Make container transparent */
+    padding: 20px;
+    border-radius: 10px;
+    /* Removed box-shadow as container is transparent */
+    /* max-width: 90vw; /* Limit width relative to viewport */
+    /* width: auto; /* Allow content to determine width up to max */
+    display: flex; /* Use flex for card layout */
+    justify-content: center; /* Center cards horizontally */
+    align-items: center; /* Center cards vertically */
+    gap: 20px; /* Space between cards */
+    /* Responsive width constraint - handled by card sizing */
+}
+
+.multiplier-increase-cards {
+    display: flex;
+    gap: 20px; /* Space between cards */
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Take full width of container */
+    flex-wrap: wrap; /* Allow cards to wrap on smaller screens if needed */
+}
+
+.multiplier-increase-card {
+    background-color: #ffcccc; /* Light red */
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    aspect-ratio: 1 / 2; /* Width:Height ratio is 1:2 (Tall rectangle) */
+
+    /* Responsive sizing using clamp and vw */
+    /* Base width: 15vw, Min width: 80px, Max width: 150px */
+    width: clamp(70px, 15vw, 150px);
+
+    /* Ensure height adjusts based on aspect ratio */
+    height: auto; /* Let aspect-ratio control height */
+
+    /* Arrange content vertically */
+    display: flex;
+    flex-direction: column; /* Stack image and text */
+    justify-content: space-around; /* Space out image and text */
+    align-items: center;
+    text-align: center; /* Center text */
+    color: rgb(30, 30, 30); /* Set text color to white */
+    font-weight: bold; /* Make text bold */
+    /* Responsive font size that scales with viewport/card width */
+    font-size: clamp(9px, 2.0vw, 14px); /* Min 8px, Preferred 1.8vw, Max 14px */
+    padding: 8px; /* Add padding around the content */
+    line-height: 1.2; /* Adjust line height for potentially wrapped text */
+}
+
+/* Style for images within the cards */
+.multiplier-increase-card img {
+    display: block; /* Remove extra space below image */
+    max-width: 115%;   /* Limit image width relative to card */
+    max-height: 115%; /* Limit image height relative to card */
+    height: auto;     /* Maintain aspect ratio */
+    margin-bottom: 5px; /* Space between image and text */
+}
+
+.multiplier-increase-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+}
+
+.multiplier-increase-card:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Media Query for Shrinking - Adjust breakpoint as needed */
+/* This query targets viewports narrower than 600px */
+/* Instead of shrinking the container, we let the clamp() function handle card size reduction */
+/* The user mentioned "prompt's canvas width becomes less than 60% of screen width" */
+/* This is difficult to implement directly in CSS. Using viewport width is more standard. */
+/* The clamp() function already provides shrinking behavior based on viewport width. */
+
+/* If specific shrinking below 60% viewport width is strictly needed for the *container*, */
+/* it would likely require JavaScript to calculate and apply styles. */
+/* Sticking to CSS-based responsive cards for now. */

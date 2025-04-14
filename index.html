@@ -32,13 +32,13 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="button-container">
             <div class="main-buttons">
                 <button id="main-button" class="main-button">2x</button>
                 <button id="one-point-two-button" class="small-button yellow-tint" style="display: none;">1.2x</button>
             </div>
-            
+
             <div class="small-buttons">
                 <button id="add-button" class="small-button">+</button>
                 <button id="add-five-button" class="small-button purple-tint">+5</button>
@@ -68,8 +68,6 @@
             </div>
     </div>
 
-    <script src="script.js"></script>
-
     <!-- Tutorial Overlay -->
     <div id="tutorial-overlay" class="tutorial-overlay">
         <div class="tutorial-content">
@@ -85,8 +83,30 @@
             </ul>
             <h3><br>Buttons</h3>
             <img src="tutorial.png" alt="Button descriptions" class="tutorial-image">
-            <p>(you can skim rest all and just look at this, lol)<br> pro tip: you can hold the buttons to quickly increase bet amount</p>
+            <p>(you can skim rest all and just look at this, lol)<br> pro tip: you can hold the button<br>hold the +10% button long enough to go all in</p>
         </div>
     </div>
+
+    <!-- New Multiplier Increase Prompt Overlay -->
+    <div id="multiplier-increase-prompt-overlay" class="multiplier-increase-prompt-overlay">
+        <div id="multiplier-increase-prompt-container" class="multiplier-increase-prompt-container">
+            <div class="multiplier-increase-cards">
+                <div id="card-1" class="multiplier-increase-card">
+                    <img src="+2%.png" alt="Win Chance Up"> <!-- Added Image -->
+                    <span>Permanent Win Chance +2%</span> <!-- Wrapped text in span -->
+                </div>
+                <div id="card-2" class="multiplier-increase-card">
+                    <img src="loss cancel.png" alt="Loss Protection"> <!-- Added Image -->
+                    <span>Loss Protection +10%</span> <!-- Wrapped text in span -->
+                </div>
+                <div id="card-3" class="multiplier-increase-card">
+                    <img src="double win.png" alt="Double Win"> <!-- Added Image -->
+                    <span>Double Win Chance +10%</span> <!-- Wrapped text in span -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>

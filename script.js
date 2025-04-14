@@ -38,7 +38,11 @@ function getInitialGameState() {
     upgradePrice: 20, // Starting price for upgrade (will be replaced by dynamic calculation)
     multiplier: 2, // Starting multiplier value
     multiplierUpgradePrice: 10000, // Price for multiplier upgrade (will be recalculated on first possible upgrade)
-        upgradeIteration: 0 // Counter for the win chance upgrade button clicks
+        upgradeIteration: 0, // Counter for the win chance upgrade button clicks
+        showMultiplierPrompt: false, // Flag to control the visibility of the multiplier increase prompt
+        permanentWinChanceBonus: 0, // Card 1 Bonus: Permanent +% win chance
+        lossProtectionChance: 0,    // Card 2 Bonus: % chance to ignore loss
+        doubleWinChance: 0          // Card 3 Bonus: % chance to multiply winnings again
         // Removed level property
     };
 }
@@ -47,7 +51,8 @@ function getInitialGameState() {
 let gameState = loadGameState();
 
 // Store the initial state structure for resetting (ensure initial state also respects cap if needed)
-const initialGameStateStructure = getInitialGameState();
+// Make sure to copy ALL properties, including the new ones
+const initialGameStateStructure = JSON.parse(JSON.stringify(getInitialGameState()));
 initialGameStateStructure.winChance = Math.min(initialGameStateStructure.winChance, 85); // Apply cap to initial state structure
 
 
@@ -74,12 +79,25 @@ document.addEventListener('DOMContentLoaded', function() {
     const tutorialOverlay = document.getElementById('tutorial-overlay');
     const closeTutorialButton = document.getElementById('close-tutorial');
 
+    // Multiplier Increase Prompt Elements
+    const multiplierIncreaseOverlay = document.getElementById('multiplier-increase-prompt-overlay');
+    const multiplierIncreaseCards = document.querySelectorAll('.multiplier-increase-card');
+
     // Variables to manage hold-to-click intervals
     let addInterval = null; // Will hold either TimeoutID or IntervalID
     let addFiveInterval = null; // Will hold either TimeoutID or IntervalID
-    let addTenthInterval = null; // Interval for the tenth button
+    let addTenthInterval = null; // Interval for the tenth button (rapid add)
+    let longPressTimer = null; // Timer for the "all in" long press
+    let allInTriggered = false; // Flag to check if "all in" happened
     const HOLD_DELAY_MS = 350; // Initial delay before rapid clicks start
     const HOLD_INTERVAL_MS = 40; // 25 clicks per second (1000ms / 25 = 40ms)
+    const LONG_PRESS_DURATION_MS = 1200; // 1.2 seconds for "all in"
+    // Moved Rand_counter and Last_update_time to global scope
+
+    // Check if the multiplier prompt should be shown on load (after elements are defined)
+    if (gameState.showMultiplierPrompt) {
+        showMultiplierIncreasePrompt();
+    }
 
     // Update the display and save state
     function updateDisplay() {
@@ -100,8 +118,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // This is used internally but not displayed to the user
         showInHandElement.textContent = Math.floor(gameState.trueInHand);
         
-        // Always ensure the win chance displays the exact value from the game state
-        winChanceElement.textContent = gameState.winChance + '%';
+        // Calculate and display the effective win chance (base + permanent bonus)
+        const displayWinChance = Math.min(gameState.winChance + (gameState.permanentWinChanceBonus || 0), 100); // Cap at 100% for display
+        winChanceElement.textContent = displayWinChance + '%';
 
         // Calculate and display the cost for the *next* win chance upgrade
         const l_next = Math.max(0, Math.floor((gameState.multiplier - 2) / 0.5));
@@ -154,6 +173,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Main button click handler - multiplier button
     mainButton.addEventListener('click', function() {
+        // Rand_counter is now incremented inside generateRandomNumber
         // If in-hand balance is already 0, it stays 0
         if (gameState.trueInHand === 0) {
             // Visual feedback for zero balance
@@ -164,21 +184,48 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        // Generate random number between 0 and 100
-        const randomValue = Math.random() * 100;
-        
-        if (randomValue < gameState.winChance) {
-            // Win chance percent to multiply the in-hand value by the current multiplier
-            gameState.trueInHand *= gameState.multiplier; // Multiply by the current multiplier
-            
+        // Generate random number for win/loss check
+        const winLossRoll = generateRandomNumber() * 100;
+        const effectiveWinChance = Math.min(gameState.winChance + (gameState.permanentWinChanceBonus || 0), 100); // Calculate effective win chance with bonus (cap at 100%)
+        console.log(`Main Button Click:`);
+        console.log(`  - Win Chance: Base=${gameState.winChance}%, Bonus=${gameState.permanentWinChanceBonus || 0}%, Effective=${effectiveWinChance.toFixed(2)}%`);
+        console.log(`  - Win/Loss Roll: ${winLossRoll.toFixed(2)}`);
+
+        if (winLossRoll < effectiveWinChance) {
+            // --- WIN ---
+            const initialWinAmount = gameState.trueInHand * gameState.multiplier;
+            gameState.trueInHand = initialWinAmount; // Apply initial multiplier
+            console.log(`Main Button: Initial Win! In Hand: ${gameState.trueInHand}`);
+
+            // Check for Double Win Chance (Card 3 Bonus)
+            const doubleWinRoll = generateRandomNumber() * 100;
+            console.log(`  - Double Win Check: Roll=${doubleWinRoll.toFixed(2)}, Chance=${gameState.doubleWinChance || 0}%`);
+            if (doubleWinRoll < (gameState.doubleWinChance || 0)) {
+                gameState.trueInHand *= gameState.multiplier; // Apply multiplier again
+                console.log(`  - Double Win Triggered! New In Hand: ${gameState.trueInHand}`);
+            } else {
+                console.log(`  - Double Win Not Triggered.`);
+            }
+
             // Visual feedback for success
             mainButton.style.backgroundColor = '#90ee90'; // Light green
             setTimeout(() => {
                 mainButton.style.backgroundColor = '#ff9aa2'; // Back to original CSS color
             }, 300);
         } else {
-            // Lose chance percent to wipe out in-hand value
-            gameState.trueInHand = 0;
+            // --- LOSS ---
+            console.log(`  - Result: Loss`);
+            // Check for Loss Protection Chance (Card 2 Bonus)
+            const lossProtectionRoll = generateRandomNumber() * 100;
+            console.log(`  - Loss Protection Check: Roll=${lossProtectionRoll.toFixed(2)}, Chance=${gameState.lossProtectionChance || 0}%`);
+            if (lossProtectionRoll < (gameState.lossProtectionChance || 0)) {
+                console.log(`  - Loss Protected! In Hand remains: ${gameState.trueInHand}`);
+                // Don't set trueInHand to 0
+            } else {
+                // Lose chance percent to wipe out in-hand value
+                console.log(`  - Loss Not Protected. In Hand reset to 0.`);
+                gameState.trueInHand = 0;
+            }
             
             // Visual feedback for loss
             mainButton.style.backgroundColor = '#ff6347'; // Tomato red
@@ -192,6 +239,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 1.2x button click handler
     onePointTwoButton.addEventListener('click', function() {
+        // Rand_counter is now incremented inside generateRandomNumber
         // If in-hand balance is already 0, it stays 0
         if (gameState.trueInHand === 0) {
             // Visual feedback for zero balance
@@ -202,21 +250,46 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        // Generate random number between 0 and 100
-        const randomValue = Math.random() * 100;
-        
-        if (randomValue < 80) { // 80% chance to increase by 1.2x
-            // Increase the in-hand value by 1.2x
-            gameState.trueInHand *= 1.2;
-            
+        // Generate random number for win/loss check
+        const winLossRoll = generateRandomNumber() * 100;
+        console.log(`1.2x Button Click:`);
+        console.log(`  - Win Chance: 80% (Fixed)`);
+        console.log(`  - Win/Loss Roll: ${winLossRoll.toFixed(2)}`);
+
+        if (winLossRoll < 80) { // 80% chance to increase by 1.2x
+            // --- WIN ---
+            const initialWinAmount = gameState.trueInHand * 1.2;
+            gameState.trueInHand = initialWinAmount; // Apply initial 1.2x multiplier
+            console.log(`1.2x Button: Initial Win! In Hand: ${gameState.trueInHand}`);
+
+            // Check for Double Win Chance (Card 3 Bonus) - applies 1.2x again
+            const doubleWinRoll = generateRandomNumber() * 100;
+            console.log(`  - Double Win Check: Roll=${doubleWinRoll.toFixed(2)}, Chance=${gameState.doubleWinChance || 0}%`);
+            if (doubleWinRoll < (gameState.doubleWinChance || 0)) {
+                gameState.trueInHand *= 1.2; // Apply 1.2x multiplier again
+                console.log(`  - Double Win Triggered! New In Hand: ${gameState.trueInHand}`);
+            } else {
+                 console.log(`  - Double Win Not Triggered.`);
+            }
             // Visual feedback for success
             onePointTwoButton.style.backgroundColor = '#90ee90'; // Light green
             setTimeout(() => {
                 onePointTwoButton.style.backgroundColor = '#fffde7'; // Back to yellow tint
             }, 300);
         } else { // 20% chance to wipe out
-            // Wipe out in-hand value
-            gameState.trueInHand = 0;
+            // --- LOSS ---
+            console.log(`  - Result: Loss`);
+             // Check for Loss Protection Chance (Card 2 Bonus)
+            const lossProtectionRoll = generateRandomNumber() * 100;
+            console.log(`  - Loss Protection Check: Roll=${lossProtectionRoll.toFixed(2)}, Chance=${gameState.lossProtectionChance || 0}%`);
+            if (lossProtectionRoll < (gameState.lossProtectionChance || 0)) {
+                 console.log(`  - Loss Protected! In Hand remains: ${gameState.trueInHand}`);
+                 // Don't set trueInHand to 0
+            } else {
+                // Wipe out in-hand value
+                console.log(`  - Loss Not Protected. In Hand reset to 0.`);
+                gameState.trueInHand = 0;
+            }
             
             // Visual feedback for loss
             onePointTwoButton.style.backgroundColor = '#ff6347'; // Tomato red
@@ -319,15 +392,24 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Function to stop the add tenth interval (handles both timeout and interval)
+    // Function to stop the add tenth interval and long press timer
     function stopAddTenthInterval() {
-        if (addTenthInterval) {
-            clearTimeout(addTenthInterval); // Clear the initial delay timeout if it's running
-            clearInterval(addTenthInterval); // Clear the rapid click interval if it's running
-            addTenthInterval = null;
-            // Restore visual state if needed
-            tenthButton.style.transform = 'scale(1)';
+        // Clear the long press timer if it's still pending
+        clearTimeout(longPressTimer);
+        longPressTimer = null;
+
+        // Only clear the rapid add interval if "all in" didn't happen
+        if (!allInTriggered) {
+            if (addTenthInterval) {
+                clearTimeout(addTenthInterval); // Clear the initial delay timeout if it's running
+                clearInterval(addTenthInterval); // Clear the rapid click interval if it's running
+                addTenthInterval = null;
+            }
         }
+        // Always restore visual state
+        tenthButton.style.transform = 'scale(1)';
+        // Reset the allInTriggered flag for the next press
+        // allInTriggered = false; // Resetting here might be too early if another event fires quickly. Reset in startAddTenthHold instead.
     }
 
     // Add button event listeners for hold-to-click (Mouse & Touch)
@@ -350,7 +432,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     addButton.addEventListener('mousedown', startAddHold);
-    addButton.addEventListener('touchstart', startAddHold);
+    addButton.addEventListener('touchstart', startAddHold, { passive: false }); // Explicitly non-passive
 
     addButton.addEventListener('mouseup', stopAddInterval);
     addButton.addEventListener('mouseleave', stopAddInterval);
@@ -381,7 +463,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     addFiveButton.addEventListener('mousedown', startAddFiveHold);
-    addFiveButton.addEventListener('touchstart', startAddFiveHold);
+    addFiveButton.addEventListener('touchstart', startAddFiveHold, { passive: false }); // Explicitly non-passive
 
     addFiveButton.addEventListener('mouseup', stopAddFiveInterval);
     addFiveButton.addEventListener('mouseleave', stopAddFiveInterval);
@@ -398,21 +480,56 @@ document.addEventListener('DOMContentLoaded', function() {
         if (event.type === 'touchstart') {
             event.preventDefault();
         }
-        // Clear any existing timer/interval first
+        // Reset the "all in" flag at the start of a new press
+        allInTriggered = false;
+        // Clear any existing timer/interval first (stopAddTenthInterval now also clears longPressTimer)
         stopAddTenthInterval();
         // Register the initial click immediately
         handleAddTenth();
         tenthButton.style.transform = 'scale(0.9)'; // Apply visual feedback immediately
-        // Start the initial delay timeout *after* the first click
+
+        // Start the initial delay timeout *after* the first click for rapid add
         addTenthInterval = setTimeout(() => {
             // Start the rapid click interval (no need for another immediate click here)
             addTenthInterval = setInterval(handleAddTenth, HOLD_INTERVAL_MS);
             // Note: Animation already applied, no need to re-apply here
         }, HOLD_DELAY_MS);
+
+        // --- Start the Long Press Timer for "All In" ---
+        // Clear any previous long press timer just in case (redundant due to stopAddTenthInterval call, but safe)
+        clearTimeout(longPressTimer);
+        longPressTimer = setTimeout(() => {
+            // Long press detected!
+            allInTriggered = true; // Set the flag
+
+            // Stop the rapid add interval if it's running
+            if (addTenthInterval) {
+                clearTimeout(addTenthInterval); // Clear initial delay timeout
+                clearInterval(addTenthInterval); // Clear rapid click interval
+                addTenthInterval = null;
+            }
+
+            // Perform "All In" if there's balance to move
+            if (gameState.netBalance > 0) {
+                console.log("All in triggered!"); // For debugging
+                gameState.trueInHand += gameState.netBalance;
+                gameState.netBalance = 0;
+
+                // Visual feedback for "All In"
+                tenthButton.style.backgroundColor = '#ffcc00'; // Bright yellow flash
+                setTimeout(() => {
+                    // Reset to its specific purple tint
+                    tenthButton.style.backgroundColor = '#d0afff'; // Matches CSS
+                }, 300);
+
+                updateDisplay(); // Update UI immediately
+            }
+            longPressTimer = null; // Timer has fired
+        }, LONG_PRESS_DURATION_MS); // 1.2 seconds
     }
 
     tenthButton.addEventListener('mousedown', startAddTenthHold);
-    tenthButton.addEventListener('touchstart', startAddTenthHold);
+    tenthButton.addEventListener('touchstart', startAddTenthHold, { passive: false }); // Explicitly non-passive
 
     tenthButton.addEventListener('mouseup', stopAddTenthInterval);
     tenthButton.addEventListener('mouseleave', stopAddTenthInterval);
@@ -585,8 +702,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 setTimeout(() => {
                     multiplierUpgradeButton.style.transform = 'scale(1)';
                 }, 100);
+
+                // Set the flag to show the prompt *before* saving state
+                gameState.showMultiplierPrompt = true;
                 
-                updateDisplay();
+                updateDisplay(); // Update UI first (this also saves the state with the flag set)
+
+                // Show the new multiplier increase prompt immediately after update
+                showMultiplierIncreasePrompt();
+
             }, function() {
                 // No clicked - do nothing
             });
@@ -597,7 +721,8 @@ document.addEventListener('DOMContentLoaded', function() {
     retryButton.addEventListener('click', function() {
         showCustomPrompt("Are you sure you want to reset all progress and start over?", function() {
             // Yes clicked - reset the game state variable
-            gameState = JSON.parse(JSON.stringify(initialGameStateStructure)); // Reset to initial state structure
+            // Use the stored initial structure which now includes the new properties initialized to 0
+            gameState = JSON.parse(JSON.stringify(initialGameStateStructure)); 
 
             // Clear the saved state from localStorage
             localStorage.removeItem(STORAGE_KEY);
@@ -614,6 +739,96 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // --- Multiplier Increase Prompt Logic ---
+    const card1 = document.getElementById('card-1');
+    const card2 = document.getElementById('card-2');
+    const card3 = document.getElementById('card-3');
+
+    function showMultiplierIncreasePrompt() {
+        if (multiplierIncreaseOverlay) {
+            multiplierIncreaseOverlay.style.display = 'flex';
+        }
+    }
+
+    // Shared function to close prompt and save state
+    function closeMultiplierPromptAndSave() {
+        if (multiplierIncreaseOverlay) {
+            multiplierIncreaseOverlay.style.display = 'none';
+        }
+        gameState.showMultiplierPrompt = false;
+        saveGameState(gameState); // Save state after closing and setting flag
+        updateDisplay(); // Update display to reflect any potential state changes from cards
+    }
+
+    // Card 1: Permanent Win Chance Bonus (+2%)
+    function handleCard1Click() {
+        gameState.permanentWinChanceBonus = (gameState.permanentWinChanceBonus || 0) + 2;
+        // Optional: Cap the bonus if needed, e.g., gameState.permanentWinChanceBonus = Math.min(gameState.permanentWinChanceBonus, 50);
+        console.log(`Card 1 Clicked: Permanent Win Chance Bonus increased to ${gameState.permanentWinChanceBonus}%`);
+        closeMultiplierPromptAndSave();
+    }
+
+    // Card 2: Loss Protection Chance (+10%)
+    function handleCard2Click() {
+        gameState.lossProtectionChance = Math.min((gameState.lossProtectionChance || 0) + 10, 100); // Cap at 100%
+        console.log(`Card 2 Clicked: Loss Protection Chance increased to ${gameState.lossProtectionChance}%`);
+        closeMultiplierPromptAndSave();
+    }
+
+    // Card 3: Double Win Chance (+10%)
+    function handleCard3Click() {
+        gameState.doubleWinChance = Math.min((gameState.doubleWinChance || 0) + 10, 100); // Cap at 100%
+        console.log(`Card 3 Clicked: Double Win Chance increased to ${gameState.doubleWinChance}%`);
+        closeMultiplierPromptAndSave();
+    }
+
+    // Attach specific handlers to each card
+    if (card1) card1.addEventListener('click', handleCard1Click);
+    if (card2) card2.addEventListener('click', handleCard2Click);
+    if (card3) card3.addEventListener('click', handleCard3Click);
+
+    // --- End Multiplier Increase Prompt Logic ---
+
     // Initialize display immediately when the page loads
     updateDisplay();
 });
+
+// Global variables for the custom random number generator
+let Rand_counter = 0;
+let Last_update_time = 0;
+
+var MD5 = function(d){var r = M(V(Y(X(d),8*d.length)));return r.toLowerCase()};function M(d){for(var _,m="0123456789ABCDEF",f="",r=0;r<d.length;r++)_=d.charCodeAt(r),f+=m.charAt(_>>>4&15)+m.charAt(15&_);return f}function X(d){for(var _=Array(d.length>>2),m=0;m<_.length;m++)_[m]=0;for(m=0;m<8*d.length;m+=8)_[m>>5]|=(255&d.charCodeAt(m/8))<<m%32;return _}function V(d){for(var _="",m=0;m<32*d.length;m+=8)_+=String.fromCharCode(d[m>>5]>>>m%32&255);return _}function Y(d,_){d[_>>5]|=128<<_%32,d[14+(_+64>>>9<<4)]=_;for(var m=1732584193,f=-271733879,r=-1732584194,i=271733878,n=0;n<d.length;n+=16){var h=m,t=f,g=r,e=i;f=md5_ii(f=md5_ii(f=md5_ii(f=md5_ii(f=md5_hh(f=md5_hh(f=md5_hh(f=md5_hh(f=md5_gg(f=md5_gg(f=md5_gg(f=md5_gg(f=md5_ff(f=md5_ff(f=md5_ff(f=md5_ff(f,r=md5_ff(r,i=md5_ff(i,m=md5_ff(m,f,r,i,d[n+0],7,-680876936),f,r,d[n+1],12,-389564586),m,f,d[n+2],17,606105819),i,m,d[n+3],22,-1044525330),r=md5_ff(r,i=md5_ff(i,m=md5_ff(m,f,r,i,d[n+4],7,-176418897),f,r,d[n+5],12,1200080426),m,f,d[n+6],17,-1473231341),i,m,d[n+7],22,-45705983),r=md5_ff(r,i=md5_ff(i,m=md5_ff(m,f,r,i,d[n+8],7,1770035416),f,r,d[n+9],12,-1958414417),m,f,d[n+10],17,-42063),i,m,d[n+11],22,-1990404162),r=md5_ff(r,i=md5_ff(i,m=md5_ff(m,f,r,i,d[n+12],7,1804603682),f,r,d[n+13],12,-40341101),m,f,d[n+14],17,-1502002290),i,m,d[n+15],22,1236535329),r=md5_gg(r,i=md5_gg(i,m=md5_gg(m,f,r,i,d[n+1],5,-165796510),f,r,d[n+6],9,-1069501632),m,f,d[n+11],14,643717713),i,m,d[n+0],20,-373897302),r=md5_gg(r,i=md5_gg(i,m=md5_gg(m,f,r,i,d[n+5],5,-701558691),f,r,d[n+10],9,38016083),m,f,d[n+15],14,-660478335),i,m,d[n+4],20,-405537848),r=md5_gg(r,i=md5_gg(i,m=md5_gg(m,f,r,i,d[n+9],5,568446438),f,r,d[n+14],9,-1019803690),m,f,d[n+3],14,-187363961),i,m,d[n+8],20,1163531501),r=md5_gg(r,i=md5_gg(i,m=md5_gg(m,f,r,i,d[n+13],5,-1444681467),f,r,d[n+2],9,-51403784),m,f,d[n+7],14,1735328473),i,m,d[n+12],20,-1926607734),r=md5_hh(r,i=md5_hh(i,m=md5_hh(m,f,r,i,d[n+5],4,-378558),f,r,d[n+8],11,-2022574463),m,f,d[n+11],16,1839030562),i,m,d[n+14],23,-35309556),r=md5_hh(r,i=md5_hh(i,m=md5_hh(m,f,r,i,d[n+1],4,-1530992060),f,r,d[n+4],11,1272893353),m,f,d[n+7],16,-155497632),i,m,d[n+10],23,-1094730640),r=md5_hh(r,i=md5_hh(i,m=md5_hh(m,f,r,i,d[n+13],4,681279174),f,r,d[n+0],11,-358537222),m,f,d[n+3],16,-722521979),i,m,d[n+6],23,76029189),r=md5_hh(r,i=md5_hh(i,m=md5_hh(m,f,r,i,d[n+9],4,-640364487),f,r,d[n+12],11,-421815835),m,f,d[n+15],16,530742520),i,m,d[n+2],23,-995338651),r=md5_ii(r,i=md5_ii(i,m=md5_ii(m,f,r,i,d[n+0],6,-198630844),f,r,d[n+7],10,1126891415),m,f,d[n+14],15,-1416354905),i,m,d[n+5],21,-57434055),r=md5_ii(r,i=md5_ii(i,m=md5_ii(m,f,r,i,d[n+12],6,1700485571),f,r,d[n+3],10,-1894986606),m,f,d[n+10],15,-1051523),i,m,d[n+1],21,-2054922799),r=md5_ii(r,i=md5_ii(i,m=md5_ii(m,f,r,i,d[n+8],6,1873313359),f,r,d[n+15],10,-30611744),m,f,d[n+6],15,-1560198380),i,m,d[n+13],21,1309151649),r=md5_ii(r,i=md5_ii(i,m=md5_ii(m,f,r,i,d[n+4],6,-145523070),f,r,d[n+11],10,-1120210379),m,f,d[n+2],15,718787259),i,m,d[n+9],21,-343485551),m=safe_add(m,h),f=safe_add(f,t),r=safe_add(r,g),i=safe_add(i,e)}return Array(m,f,r,i)}function md5_cmn(d,_,m,f,r,i){return safe_add(bit_rol(safe_add(safe_add(_,d),safe_add(f,i)),r),m)}function md5_ff(d,_,m,f,r,i,n){return md5_cmn(_&m|~_&f,d,_,r,i,n)}function md5_gg(d,_,m,f,r,i,n){return md5_cmn(_&f|m&~f,d,_,r,i,n)}function md5_hh(d,_,m,f,r,i,n){return md5_cmn(_^m^f,d,_,r,i,n)}function md5_ii(d,_,m,f,r,i,n){return md5_cmn(m^(_|~f),d,_,r,i,n)}function safe_add(d,_){var m=(65535&d)+(65535&_);return(d>>16)+(_>>16)+(m>>16)<<16|65535&m}function bit_rol(d,_){return d<<_|d>>>32-_}
+
+// tion to generate a random number between 0 and 1 using MD5 hash of time
+function generateRandomNumber() {
+    // Calculate time-based input value
+    const timeInMillis = Date.now();
+    const timeInSeconds = Math.floor(timeInMillis / 1000);
+    // Reset counter if the second has changed
+    if(!(Last_update_time===timeInSeconds)) {
+        Rand_counter = 0;
+    }
+    // Increment counter *before* using it for EVERY call
+    Rand_counter++; 
+    const inputValue = ((timeInSeconds * 1000) + Rand_counter).toString(); // Use milliseconds and incrementing counter
+    // console.log(`RNG Input: ${inputValue}`); // Optional debug log
+
+    // Calculate MD5 hash using the existing MD5 function
+    const hashResult = MD5(inputValue);
+    console.log(hashResult);
+
+    // Convert MD5 hash (hex string) to BigInt
+    // Prepend '0x' to the hex string for BigInt conversion
+    const hashAsBigInt = BigInt('0x' + hashResult);
+
+    // Define the maximum 128-bit value (2^128 - 1) as BigInt
+    const max128BitValue = (BigInt(1) << BigInt(128)) - BigInt(1);
+
+    // Normalize the hash value to a range of 0 to 1
+    // Convert BigInts to Number for floating-point division
+    const normalizedValue = Number(hashAsBigInt) / Number(max128BitValue);
+    // console.log(`RNG Output: ${normalizedValue}`); // Optional debug log
+    Last_update_time=timeInSeconds;
+
+    return normalizedValue; // Return the value between 0 and 1
+}
