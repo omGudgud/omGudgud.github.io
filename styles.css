@@ -11,9 +11,15 @@ body {
     /* Removed flex centering properties */
     background-color: #fce9e7;
     transform: scale(0.8);
+    height: 100vh;
     transform-origin: top center;
     overflow: hidden; /* Set transform origin to top */
     color: #383838; /* Set default text color to softer black */
+}
+
+/* Apply Comic Sans MS to all header elements */
+h1, h2, h3, h4, h5, h6, p {
+    font-family: "Comic Sans MS", cursive, sans-serif;
 }
 
 /* Class to prevent body scrolling when popup is active */
@@ -55,6 +61,7 @@ body {
     display: flex;
     /* justify-content: space-around; Removed */
     /* font-size: 24px; Replaced with clamp for fluid sizing */
+    font-family: "Fantasy", cursive, sans-serif; /* Apply Comic Sans font */
     font-size: clamp(12px, 6.2vw, 24px); /* Min 12px, Preferred 4% viewport width, Max 24px */
     margin-bottom: 0px;
     background-color: #ffffff; /* Add background for shadow */
@@ -69,6 +76,7 @@ body {
 }
 
 .balance-item {
+    
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -78,7 +86,9 @@ body {
 }
 
 .balance-label {
+    font-family: "Comic sans", cursive, sans-serif;
     font-weight: bold;
+    color: #323232;
     margin-bottom: 5px;
 }
 
@@ -124,16 +134,17 @@ body {
 
 .small-buttons {
     display: flex;
-    gap: 20px;
+    gap: 10px;
 }
 
 .small-button {
-    width: 80px;
-    height: 80px;
+    width: 75px;
+    height: 75px;
     border-radius: 50%;
     background-color: white;
     border: none; /* Removed border */
-    font-size: 24px;
+    font-size: 20px;
+    color: #333;
     font-weight: bold;
     cursor: pointer;
     box-shadow:
@@ -165,7 +176,7 @@ body {
 }
 
 .green-tint {
-    background-color: #d6ffd6; /* Slightly more vibrant green */
+    background-color: #FFFFFF; /* Slightly more vibrant green */
 }
 
 .yellow-tint {
@@ -210,15 +221,16 @@ body {
 
 .info-button-style { /* Style for the new info button */
     position: absolute;
-    top: 0px; /* Same spacing as retry */
-    left: 0px; /* Position on the left */
-    background-color: transparent; /* Make background transparent */
+    top: 93vh; /* Same spacing as retry */
+    left: 0vw; /* Position on the left */
+     /* Make background transparent */
     border: none;
     color: rgb(0, 0, 0); /* Keep text color */
-    width: 30px; /* Same size as retry */
-    height: 30px; /* Same size as retry */ /* Same rounded corners */
-    font-size: 18px; /* Same symbol size */
+    width: 50px; /* Same size as retry */
+    height: 50px; /* Same size as retry */ /* Same rounded corners */
+    font-size: 36px; /* Same symbol size */
     font-weight: bold;
+    border-radius: 100%;
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -227,6 +239,7 @@ body {
     transition: transform 0.2s, color 0.2s; /* Transition color instead of background */
     padding: 0;
     line-height: 1;
+    background-color: white;
 }
 
 /* Removed .retry-button-style:hover rule */
@@ -241,7 +254,7 @@ body {
     align-items: flex-start; /* Align items to the top */
     justify-content: center; /* Center the group horizontally */
     gap: 15px; /* Increased gap for better spacing */
-    margin-top: 10px;
+    margin-top: 0px;
 }
 
 /* Styles for the container holding the upgrade button and its price */
@@ -253,7 +266,7 @@ body {
 }
 
 .price-display {
-    font-size: 18px;
+    font-size: 15px;
     font-weight: bold;
 }
 
@@ -262,7 +275,7 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 5px;
-    margin-top: 20px;
+    margin-top: 40px;
     width: 100%;
 }
 
@@ -270,11 +283,11 @@ body {
     width: 200px;
     height: 50px;
     border-radius: 25px;
-    background-color: #a2d2ff; /* Slightly more vibrant blue */
+    background-color: #cb5cfb; /* Slightly more vibrant blue */
     border: none; /* Removed border */
     font-size: 18px;
     font-weight: bold;
-    color: #333;
+    color: #ffffff;
     cursor: pointer;
     box-shadow:
         inset 0 1px 2px rgba(255, 255, 255, 0.6), /* Inner highlight */
@@ -302,7 +315,7 @@ body {
 }
 
 .blue-tint {
-    background-color: #a2d2ff; /* Slightly more vibrant blue */
+    background-color: #b200fe; /* Slightly more vibrant blue */
 }
 
 .custom-prompt-overlay {
@@ -498,7 +511,6 @@ body {
     background-color: transparent; /* Make container transparent */
     padding: 20px;
     border-radius: 10px;
-    width: 80vw;
     /* Removed box-shadow as container is transparent */
     /* max-width: 90vw; /* Limit width relative to viewport */
     /* width: auto; /* Allow content to determine width up to max */

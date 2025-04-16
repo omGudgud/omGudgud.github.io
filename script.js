@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
         showInHandElement.textContent = Math.floor(gameState.trueInHand);
         
         // Calculate and display the effective win chance (base + permanent bonus)
-        const displayWinChance = Math.min(gameState.winChance + (gameState.permanentWinChanceBonus || 0), 100); // Cap at 100% for display
+        const displayWinChance = Math.floor(Math.min(gameState.winChance + (gameState.permanentWinChanceBonus || 0), 100)); // Cap at 100% for display
         winChanceElement.textContent = displayWinChance + '%';
 
         // Calculate and display the cost for the *next* win chance upgrade
