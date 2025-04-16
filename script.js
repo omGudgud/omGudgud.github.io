@@ -40,7 +40,7 @@ function getInitialGameState() {
     multiplierUpgradePrice: 10000, // Price for multiplier upgrade (will be recalculated on first possible upgrade)
         upgradeIteration: 0, // Counter for the win chance upgrade button clicks
         showMultiplierPrompt: false, // Flag to control the visibility of the multiplier increase prompt
-        permanentWinChanceBonus: 0, // Card 1 Bonus: Permanent +% win chance
+        permanentWinChanceBonus: 50, // Card 1 Bonus: Permanent +% win chance
         lossProtectionChance: 0,    // Card 2 Bonus: % chance to ignore loss
         doubleWinChance: 0          // Card 3 Bonus: % chance to multiply winnings again
         // Removed level property
@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
         showInHandElement.textContent = Math.floor(gameState.trueInHand);
         
         // Calculate and display the effective win chance (base + permanent bonus)
-        const displayWinChance = Math.floor(Math.min(gameState.winChance + (gameState.permanentWinChanceBonus || 0), 100)); // Cap at 100% for display
+        const displayWinChance = Math.floor(Math.min(gameState.winChance + (gameState.permanentWinChanceBonus || 0), 90)); // Cap at 100% for display
         winChanceElement.textContent = displayWinChance + '%';
 
         // Calculate and display the cost for the *next* win chance upgrade
@@ -777,7 +777,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Card 3: Double Win Chance (+10%)
     function handleCard3Click() {
-        gameState.doubleWinChance = Math.min((gameState.doubleWinChance || 0) + 10, 100); // Cap at 100%
+        gameState.doubleWinChance = Math.min((gameState.doubleWinChance || 0) + 5, 100); // Cap at 100%
         console.log(`Card 3 Clicked: Double Win Chance increased to ${gameState.doubleWinChance}%`);
         closeMultiplierPromptAndSave();
     }
