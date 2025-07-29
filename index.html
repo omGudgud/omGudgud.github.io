@@ -2,111 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Button Game</title>
-    <link rel="stylesheet" href="styles.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silhouette Page</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="game-container">
-        <div class="canvas"> <!-- Buttons will be positioned relative to this -->
-            <button id="info-button" class="info-button-style">i</button> <!-- Added info button -->
-            <button id="retry-button" class="retry-button-style">↻</button> <!-- Moved retry button here -->
-            <div class="balance-display">
-                <div class="balance-item">
-                    <span class="balance-label">Net Balance</span>
-                    <span id="net-balance"></span>
-                </div>
-                <div class="balance-item">
-                    <span class="balance-label">bet amount</span>
-                     <!-- Add second <br> for extra line space -->
-                    <span id="in-hand"></span>
-                </div>
-                <div class="balance-item">
-                    <span class="balance-label">Win Chance</span>
-                    <!-- Removed win-chance-container -->
-                    <span id="win-chance"></span>
-                </div>
-                <!-- Hidden element for show-in-hand value -->
-                <div id="show-in-hand-container" style="display: none;">
-                    <span id="show-in-hand"></span>
-                </div>
+    <div class="container">
+        <div id="top-rect" class="btn"></div>
+        <div class="middle-section">
+            <div class="middle-left">
+                <div id="mid-rect-1" class="btn"></div>
+                <div id="mid-rect-2" class="btn"></div>
+                <div id="mid-rect-3" class="btn"></div>
+            </div>
+            <div class="middle-right">
+                <div id="circle-1" class="btn"></div>
+                <div id="circle-2" class="btn"></div>
             </div>
         </div>
-
-        <div class="button-container">
-            <div class="main-buttons">
-                <button id="main-button" class="main-button">2x</button>
-                <button id="one-point-two-button" class="small-button yellow-tint" style="display: none;">1.2x</button>
-            </div>
-
-            <div class="small-buttons">
-                <button id="add-button" class="small-button">+</button>
-                <button id="add-five-button" class="small-button purple-tint">+5</button>
-                <button id="tenth-button" class="small-button yellow-tint"><img src="Untitled22_20250406111516.png" alt="Tenth"></button> <!-- Replaced text with image -->
-                <div class="upgrade-container"> <!-- Main flex container for upgrade group and bank button -->
-                    <div class="upgrade-item"> <!-- Container for upgrade button + price -->
-                        <button id="upgrade-button" class="small-button green-tint">+%</button>
-                        <div class="price-display"> <!-- Price display now below upgrade button -->
-                            <span id="upgrade-price"></span>
-                            <span> $ </span>
-                        </div>
-                    </div>
-                    <button id="bank-button" class="small-button">$</button> <!-- Bank button is now a direct child -->
-                </div><!-- Removed Retry button from here -->
-            </div>
-
-            <div class="lower-buttons">
-
-                <div class="multiplier-upgrade-container">
-                    <button id="multiplier-upgrade-button" class="multiplier-button blue-tint" disabled>Multiplier +0.5</button>
-                    <div class="price-display">
-                        <span> </span>
-                        <span id="multiplier-upgrade-price">10000</span>
-                        <span> $ </span>
-                    </div>
-                </div>
-            </div>
-    </div>
-
-    <!-- Tutorial Overlay -->
-    <div id="tutorial-overlay" class="tutorial-overlay">
-        <div class="tutorial-content">
-            <button id="close-tutorial" class="close-button">&times;</button>
-            <h2>Tutorial</h2>
-            <p>Hello, this is a small tutorial before you dive into the game.</p>
-            <ul>
-                <li>The game is a simple 'double or nothing' game with an incremental twist. Each time you press the 2x button, you either lose money or double your betting amount.</li>
-                <li>The win percentage is given in the top right corner. You can increase the win percentage by buying more.</li>
-                <li>Once your win percentage is higher than 80%, you can buy +0.5 multiplier. But beware, it will reset the progress and you will start with a lower win percentage.</li>
-                <li>Your objective is simple: increase the multiplier as much as you can.</li>
-                <li>The game officially ends when you unlock the 4.5x multiplier.</li>
-            </ul>
-            <h3><br>Buttons</h3>
-            <img src="tutorial.png" alt="Button descriptions" class="tutorial-image">
-            <p>(you can skim rest all and just look at this, lol)<br> pro tip: you can hold the button<br>hold the +10% button long enough to go all in</p>
-        </div>
-    </div>
-
-    <!-- New Multiplier Increase Prompt Overlay -->
-    <div id="multiplier-increase-prompt-overlay" class="multiplier-increase-prompt-overlay">
-        <div id="multiplier-increase-prompt-container" class="multiplier-increase-prompt-container">
-            <div class="multiplier-increase-cards">
-                <div id="card-1" class="multiplier-increase-card">
-                    <img src="+2.png" alt="Win Chance Up"> <!-- Added Image -->
-                    <span>Permanent Win Chance +1.5%</span> <!-- Wrapped text in span -->
-                </div>
-                <div id="card-2" class="multiplier-increase-card">
-                    <img src="loss cancel.png" alt="Loss Protection"> <!-- Added Image -->
-                    <span>Loss Protection +5%</span> <!-- Wrapped text in span -->
-                </div>
-                <div id="card-3" class="multiplier-increase-card">
-                    <img src="double win.png" alt="Double Win"> <!-- Added Image -->
-                    <span>Double Win Chance +5%</span> <!-- Wrapped text in span -->
-                </div>
+        <div class="bottom-section">
+            <div id="bottom-left-square" class="btn"></div>
+            <div class="bottom-right-rects">
+                <div id="bottom-rect-1" class="btn"></div>
+                <div id="bottom-rect-2" class="btn"></div>
             </div>
         </div>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
