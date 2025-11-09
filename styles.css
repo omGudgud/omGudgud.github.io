@@ -67,6 +67,7 @@ justify-content:flex-start;
 .bottom_panel
 {
   max-width: 100%;
+  height: 30vh;
 }
 
 .my-button
@@ -99,7 +100,42 @@ justify-content:flex-start;
 .light
 {
   flex: 1;
+  flex-direction: column;
+  display: flex;
   width: 10vh;
   right: 0%;
   height: 52vh;
+  align-items: flex-end;
+  justify-content:center;
+  
+}
+.beautifier-1
+{
+  width: 100%;
+  position: relative;
+}
+.beautifier-div
+{
+  box-sizing: border-box;
+  width:50%;
+  margin-top: 5vh;
+  margin-bottom: 5vh;
+  height: 5vh;
+  background-image: url('assets/light_pole.png');
+  background-repeat:no-repeat;
+  background-position: top left;
+  background-size: contain;
+  display: flex;
+  align-items: start;
+justify-content: top;
+}
+.beautifier-2
+{
+  width: 200%;
+  height: 200%;
+  padding-right: 2vh;
+  align-items: flex-start;
+  object-position: top left;
+  z-index: 1;
+  
 }
