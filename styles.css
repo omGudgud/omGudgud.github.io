@@ -10,7 +10,7 @@ body{
    background-position: top center;
   background-color: black;
   background-size:contain;
-max-height: 100vh;
+max-height: 100svh;
 max-width: 100vw ;
 }
 .button-container
@@ -67,7 +67,7 @@ justify-content:flex-start;
 .bottom_panel
 {
   max-width: 100%;
-  height: 30vh;
+  height: 30svh;
 }
 
 .my-button
