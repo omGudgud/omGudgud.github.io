@@ -9,7 +9,12 @@
 <body>
     <div class="box">
       <div class="top_panel">
-        <img src="assets/bet_panel.png" class="top_panel_img" alt="Icon" >
+        <div class="top_panel_ui">
+        <img src="assets/bet_panel2.png" class="top_panel_img" alt="Icon" >
+        <div class="realUI" id="bet-amount">
+          1
+          </div>
+        </div>
         </div>
     <div class="test">
     <div class="button-container">
@@ -45,9 +50,14 @@
 </div>
 <div class="test-centre">
 <div>
-    <button class="my-button" id="btn-11">
-      <img src="assets/pink_btn.png" class="=main_button" alt="Icon" >
+    <div class="overlay-test">
+    <button class="my-button" onclick="OnClickBigButton()" id="btn-11">
+      <img src="assets/big_button.png" class="main_button" alt="Icon" >
     </button>
+    <div class="multiplier_value">
+    <img src="assets/multiplier_panel.png" class="Multiplier_UI" alt="Icon" >
+    </div>
+    </div>
     </div>
     </div>
     <div class="light">
@@ -58,11 +68,12 @@
     </div>
 </div>
   <div class="bottom_panel">
-        <img src="assets/bottom_panel.png" class="bottom_panel" alt="Icon" >
+        <img src="assets/bottom_panel2.png" class="bottom_panel" alt="Icon" >
         </div>
+        <script src="Decimal.js"></script>
     <script src="global_dat.js"></script>
     <script src="decimal_tetration_approximation.js"></script>
-    <script src="big_math.js"></script>
+    <script src="Button.js"></script>
     </div>
 
 </body>
