@@ -4,119 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <title>ban</title>
-    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="box">
-      <div class="top_panel">
-        <div class="top_panel_ui">
-        <img src="assets/bet_panel2.png" class="top_panel_img" alt="Icon" >
-        <div class="realUI" id="bet-amount">
-          1
-          </div>
-        </div>
-        </div>
-    <div class="test">
-    <div class="button-container">
-
-  <button class="bet-button" id="btn-1">
-    <img src="assets/bet1e.png" class="button-overlay" alt="Icon" >
-</button>
-  <button class="bet-button" id="btn-2">
-    <img src="assets/bet5e.png" class="button-overlay" alt="Icon" >
-  </button>
-  <button class="bet-button" id="btn-3">
-    <img src="assets/bet25e.png" class="button-overlay" alt="Icon" >
-  </button>
-  <button class="bet-button" id="btn-4">
-    <img src="assets/bet100e.png" class="button-overlay" alt="Icon" >
-  </button>
-  <button class="bet-button" id="btn-5">
-    <img src="assets/2xe.png" class="button-overlay" alt="Icon" >
-  </button>
-  <button class="bet-button" id="btn-6">
-    <img src="assets/5xe.png" class="button-overlay" alt="Icon" >
-  </button>
-  <button class="bet-button" id="btn-7">
-    <img src="assets/10xe.png" class="button-overlay" alt="Icon" >
-  </button>
-  <button class="bet-button" id="btn-8">
-    <img src="assets/1000xe.png" class="button-overlay" alt="Icon" >
-  </button>
-  <button class="bet-button" id="btn-9">
-    <img src="assets/1percente.png" class="button-overlay" alt="Icon" >
-  </button>
-
-</div>
-<div class="test-centre">
-<div>
-    <div class="overlay-test">
-    <button class="my-button" onclick="button_animation();OnClickBigButton();" id="btn-11">
-      <img src="assets/big_button.png" class="main_button" alt="Icon" >
-    </button>
-    <div class="multiplier_value">
-    <img src="assets/multiplier_panel.png" class="Multiplier_UI" alt="Icon" >
-    </div>
-    </div>
-    </div>
-    </div>
-    <div class="light">
-      <div class="beautifier-div">
-        <img src="assets/green_light.png" alt="" class="win_light" id="green_color">
-      </div>
-      <div class="beautifier-div">
-        <img src="assets/red_light2.png" alt="" class="win_light" id="red_color">
-      </div>
-    </div>
-</div>
-  <div class="bottom_panel">
-    <div class="bottom_space">
-    <div class="bottom_board">
-        <img src="assets/bottom_panel2.png" class="bottom_panel" alt="Icon" >
-        </div>
-      <div class="bottom_ui">
-        <div class="bottom_ui_page_1">
-        <div class="UI_column_2">
-         <p id="win_percentage"> 70%</p>
-         <div>
-         <p id="next_win_chance">next chance 70 -> 75</p>
-         </div>
-        </div>
-        <div class="UI_column_1">
-          <div class="button_div_1">
-          <p class="upgrade_declare">Win Chance </p>
-          <p class="upgrade_declare">Upgrade</p>
-          <button class="UI_button_1">
-            Upgrade
-          </button>
-          <p class="price_win_chance" id="win_chance_price">hi</p>
-        </div>
-        <div class="button_div_2">
-          <button class="UI_button_1" id="withdraw">
-            Withdraw
-          </button>
-        </div>
-        </div>
-        <div class="UI_column_3">
-          <div class="button_div_1">
-          <p class="upgrade_declare multiplier_upgrade_declare">Multiplier </p>
-          <p class="upgrade_declare multiplier_upgrade_declare" >Upgrade</p>
-          <button class="UI_button_1">
-            Upgrade
-          </button>
-          <p class="price_win_chance" id="Multiplier_price">hi</p>
-        </div>
-        <button class="next_page">
-          &#x27A1;
-        </button>
-        </div>
-  </div>
-  </div>
-        <script src="Decimal.js"></script>
-    <script src="global_dat.js"></script>
-    <script src="decimal_tetration_approximation.js"></script>
-    <script src="Button.js"></script>
-    </div>
-
+   <iframe id="Game_iframe" src="mainCode.html" frameborder="0" width="400px" height="700px"></iframe>
+   <style>
+    #Game_iframe
+    {
+      margin: 0;
+      border:0;
+     width: min(99vw, 57.14vh); 
+    height: min(99vh, 173.25vw);
+      background-color: #444;
+      overflow: hidden;
+    }
+    body
+    {
+      display: flex;
+      background-color: #000;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    </style>
 </body>
 </html>

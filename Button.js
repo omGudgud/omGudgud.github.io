@@ -23,9 +23,9 @@ function OnClickBigButton()
     const bet_amount=document.getElementById("bet-amount");
     const test=document.getElementById("win_chance_price");
     z=Decimal.div(y,k);
-    for(let i=1;i<=5;i++)
+    for(let i=1;i<=10;i++)
     {
-        setTimeout(() => {bet_amount.innerHTML=`${Decimal.ceil(Decimal.mul(k,(Decimal.pow(z,(i*0.2)))))}`;}, 50*i); // apologies for any unfortunate eye that had to see this
+        setTimeout(() => {bet_amount.innerHTML=`${Decimal.ceil(Decimal.mul(k,(Decimal.pow(z,(i*0.1)))))}`;}, 25*i); // apologies for any unfortunate eye that had to see this
         console.log("this executed");
     }
     //bet_amount.innerHTML=`${x}`;
