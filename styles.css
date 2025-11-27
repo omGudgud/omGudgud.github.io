@@ -186,7 +186,7 @@ justify-content: top;
   grid-row: 1;
   color: #ffffff;
   font-family: "pixel_font";
-  font-size: xx-large;
+  font-size: 4vh;
   width: 28vh;
   overflow-wrap: anywhere;
   line-height: 1.6rem;
@@ -325,11 +325,11 @@ body::before {
     max-width: 30vw;
     font-family: "pixel_font";
     color: white;
-    font-size: large;
+    font-size: 2.7vh;
   }
 .upgrade_declare
 {
-  font-size: x-large;
+  font-size: 3.5vh;
   text-align: center;
   width: 15vh;
   max-width: 30vw;
@@ -341,12 +341,12 @@ body::before {
 .price_win_chance
 {
  font-family: "pixel_font";
- font-size: 0.875rem;
+ font-size: 2vh;
  margin: 0.25vh;
  margin-bottom: 0.25vh;
  overflow-wrap: anywhere;
  width: 16vh;
- height: 1.8rem;
+ height: 4vh;
  text-align: center;
 }
 .bottom_ui_page_1
@@ -390,7 +390,7 @@ body::before {
   border: none;
   color: white;
   font-weight: 900;
-  font-size: xx-large;
+  font-size: 4vh;
   margin-right: 2vh;
   height: 100%;
   margin-top: -1vh;
@@ -410,6 +410,6 @@ body::before {
 }
 .in_hand_cash
 {
-  font-size: x-large;
+  font-size: 3.5vh;
   width: 90%;
 }
