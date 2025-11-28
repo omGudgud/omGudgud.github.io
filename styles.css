@@ -43,8 +43,7 @@ overflow: hidden;
 justify-content:flex-start;
   flex-direction: row; 
   align-items:flex-start; 
-  width: 100%;
-    
+  width: 100%;    
 }
 .bet-button
 {
@@ -62,6 +61,9 @@ justify-content:flex-start;
   display: flex;
   width: 100%;
   height: auto;
+  filter: brightness(80%);
+  filter: saturate(90%);
+  animation: oscillate 0.25s linear;
 }
 .top_panel_img
 {
@@ -81,7 +83,7 @@ justify-content:flex-start;
 
 .bottom_board img
 {
-  filter: brightness(80%);
+  filter: brightness(60%);
 }
 
 .my-button
@@ -164,7 +166,7 @@ justify-content: top;
   grid-area: 1/1;
   place-items: center;
   position:absolute;
-  right: 50%;
+  right: 51%;
   transform: translateX(50%);
   top: 30%;
 }
@@ -189,7 +191,7 @@ justify-content: top;
   font-size: 4vh;
   width: 28vh;
   overflow-wrap: anywhere;
-  line-height: 1.6rem;
+  line-height: 3.5vh;
   filter: opacity(60%);
   margin-left: 2vh;
   
@@ -247,7 +249,6 @@ body::before {
   width: 23vh;
   height: 23vh;
   transform: translate(-40.75%, -39.75%);
-  display: none;
 }
 #red_color
 {
@@ -331,12 +332,10 @@ body::before {
 {
   font-size: 3.5vh;
   text-align: center;
-  width: 15vh;
-  max-width: 30vw;
   color: #A188FF;
-  margin-top: 0;
+  margin-top: -0.1vh;
   white-space: nowrap;
-  margin-bottom: 0;
+  margin-bottom: 0.1vh;
 }
 .price_win_chance
 {
@@ -344,9 +343,8 @@ body::before {
  font-size: 2vh;
  margin: 0.25vh;
  margin-bottom: 0.25vh;
- overflow-wrap: anywhere;
- width: 16vh;
- height: 4vh;
+ overflow-wrap: normal;
+ height: 2.1vh;
  text-align: center;
 }
 .bottom_ui_page_1
@@ -360,29 +358,33 @@ body::before {
 }
 #win_percentage
 {
-  margin-top: 1vh;
+  margin-top: 0vh;
   margin-left: 0;
-  height: auto;
+  height: 13vh;
   font-size: 13vh;
+
   margin-bottom: 1vh;
 }
 #next_win_chance
 {
-  margin-top: 3vh;
+  margin-top: 0vh;
   margin-left: 1vh;
   text-align: center;
   color: beige;
+  text-overflow: normal;
+  font-size: 2.15vh;
 }
 .UI_column_3
 {
-  margin-left: 2vh;
+  margin-left: 1vh;
   display: flex;
   align-items: flex-end;
   flex-direction: column;
 }
 .multiplier_upgrade_declare
 {
-  color: #8888FF;
+  color: #88aaFF;
+  text-align: center;
 }
 .next_page
 {
@@ -399,17 +401,63 @@ body::before {
 .UI_column_1
 {
   margin-left: 2vh;
+  flex: 2;
 }
 #withdraw
 {
   position: absolute;
   color: #66ff66;
   border-color: #88ff88;
-  transform: scaleX(110%) translateX(60%);
-  background-color: rgba(0, 255, 0, 0.05);
+  margin-left: 2vh;
+  margin-top: 0.5vh;
+  transform: scaleX(110%) translateX(2.5%) translateY(-5%);
+  background-color: rgba(0, 255, 0, 0.02);
 }
 .in_hand_cash
 {
-  font-size: 3.5vh;
+  font-size: 3.2vh;
   width: 90%;
+  margin-top: 1.5vh;
+  color: #FFbbbb;
+}
+.arrow_page
+{
+  font-weight: bolder;
+  font-size: 3.2vh;
+  background:transparent;
+  border: none;
+  color: #ffffff;
+  transform: translateY(200%);
+}
+.button_div_1, .button_div_2
+{
+  transform: translateY(-0.5vh);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+@keyframes oscillate
+{
+  0%
+  {
+    transform: rotateZ(0deg);
+  }
+  25%
+  {
+    transform: rotateZ(15deg);
+  }
+  50%
+  {
+    transform: rotateZ(-10deg);
+  }
+  75%
+  {
+    transform: rotateZ(5deg);
+  }
+  100%
+  {
+    transform: rotate(0deg);
+  }
 }
