@@ -1,7 +1,7 @@
 @font-face
 {
   font-family: "pixel_font";
-  src: url('assets/Roboto_Condensed-Regular.ttf');
+  src: url('assets/Jersey25-Regular.ttf');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -344,22 +344,23 @@ body::before {
     color: white;
     font-size: 2.4vh;
     filter: drop-shadow(0px 0px 20px rgba(255,255,255,0.5));
-    text-shadow: 0px 0px 20px rgba(255,255,255,0.5);
+    text-shadow: 0px 0px 20px rgba(255,255,255,0.25);
   }
 .upgrade_declare
 {
-  font-size: 2.7vh;
+  font-size: 3.0vh;
   text-align: center;
-  color: #A188FF;
+  color: #11ff44;
   margin-top: 0.5vh;
   white-space: nowrap;
   margin-bottom: 0.1vh;
+  animation: meander2 1.5s ease-out infinite;
   filter: drop-shadow(0px 0px 20px rgba(161,128,255,0.5));
 }
 .price_win_chance
 {
  font-family: "pixel_font";
- font-size: 1.5vh;
+ font-size: 1.7vh;
  margin: 0.25vh;
  margin-bottom: 0.25vh;
  overflow-wrap: normal;
@@ -371,9 +372,11 @@ body::before {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  margin-top: 1vh;
+  margin-top: 0.5vh;
   max-height: 80%;
-  width: 56vh;
+  width: 58vh;
+  transform: translateX(-2%);
+  background-color: #330133;
 }
 #win_percentage
 {
@@ -382,6 +385,7 @@ body::before {
   height: 13vh;
   font-size: 12vh;
   width: 18vh ;
+  animation: meander 1.5s ease-out infinite;
   text-shadow: 0px 0px 40px rgba(255,255,255,0.5);
 
   margin-bottom: 1vh;
@@ -404,7 +408,7 @@ body::before {
 }
 .multiplier_upgrade_declare
 {
-  color: #88aaFF;
+  color: #33ff11;
   text-align: center;
 }
 .next_page
@@ -433,13 +437,16 @@ body::before {
   margin-top: 0.5vh;
   transform: scaleX(110%) translateX(2.5%) translateY(-5%);
   background-color: rgba(0, 255, 0, 0.02);
+  filter: drop-shadow(0px 0px 20px rgba(128,255,128,0.5));
+  text-shadow: 0px 0px 20px rgba(128,255,128,0.25);
 }
 .in_hand_cash
 {
   font-size: 3vh;
-  width: 90%;
-  margin-top: 1.3vh;
-  color: #FFbbbb;
+  height: 3.7vh;
+  transform: translateY(2.6vh) scaleX(103%);
+  color: #FFFFFF;
+  background-color: #330133;
    text-shadow: 0px 0px 30px rgba(255,192,192,0.5) ;
 }
 .arrow_page
@@ -528,7 +535,7 @@ body::before {
 {
   height: 30vh;
 background-color: red;
-filter: drop-shadow(0px 0px 6px #8888ff);
+filter: drop-shadow(0px 0px 20px #8888ff);
 animation: fall2 0.1s ease-out;
 opacity: 1;
 }
@@ -558,5 +565,43 @@ opacity: 1;
   100%
   {
     transform: scaleY(100%);
+  }
+}
+@keyframes meander
+{
+  0%
+  {
+    transform: translateY(0%);
+  }
+  25%
+  {
+    transform: translateY(1.5%);
+  }
+  75%
+  {
+    transform: translateY(-1.5%);
+  }
+  100%
+  {
+    transform: translateY(0%);
+  }
+}
+@keyframes meander2
+{
+  0%
+  {
+    transform: translateY(0%) translateX(0%);
+  }
+  25%
+  {
+    transform: translateY(2.0%) translateX(-0.35%);
+  }
+  75%
+  {
+    transform: translateY(-2.0%) translateX(0.35%);
+  }
+  100%
+  {
+    transform: translateY(0%) translateX(0%);
   }
 }
