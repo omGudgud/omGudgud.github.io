@@ -16,7 +16,7 @@ function OnClickBigButton()
     var random=Decimal.random()*100;
     if(random<=(game_data.base_win_chance+level_data.win_chance_change+50))
     {
-        game_data.bet_amount=Decimal.mul(y,2); 
+        game_data.bet_amount=Decimal.pow(y+1,2); 
         console.log(game_data.base_win_chance+level_data.win_chance_change);   
     }
     else
@@ -52,8 +52,9 @@ function button_animation()
 }
 
 
-function OnClickBetButton(a)
+function OnClickBetButton(a,b)
 {
+    const bet_button=document.getElementById(b)
     b=new Decimal(a);
     const balance=document.getElementById("total_amount");
     const bet=document.getElementById("bet-amount");
@@ -63,6 +64,9 @@ function OnClickBetButton(a)
         balance.innerHTML=`${game_data.total_balance} $`;
         bet.innerHTML=`${game_data.bet_amount} $`;
     }
+    bet_button.style.animation="none";
+    void bet_button.offsetWidth;
+    bet_button.style.animation= "oscillate 0.25s linear"
 }
 
 function OnClickWinChanceUpgradeButton() 

@@ -1,7 +1,7 @@
 @font-face
 {
   font-family: "pixel_font";
-  src: url('assets/Chalkchalk-Regular.ttf');
+  src: url('assets/Roboto_Condensed-Regular.ttf');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -21,7 +21,7 @@ overflow: hidden;
  gap: 0.4vh;
   flex-direction: column; 
   align-items:flex-start;
-  width: 5.5vh;
+  width: 5.3vh;
   filter: brightness(80%);
   flex-shrink: 0;
 }
@@ -83,7 +83,7 @@ justify-content:flex-start;
 
 .bottom_board img
 {
-  filter: brightness(60%);
+transform: scaleX(122%) scaleY(108%);
 }
 
 .my-button
@@ -95,10 +95,18 @@ justify-content:flex-start;
   border: none;
   width: 22vh;
   height: 22vh;
-  z-index: 1;
+  z-index: 2;
+  margin-top: 0.4vh;
+  margin-left: 0.075vh;
   grid-column: 1;
   grid-row: 1;
 
+}
+.button_wrapper
+{
+  grid-row: 1;
+  grid-column: 1;
+  z-index: 1;
 }
 .my-button img
 {
@@ -188,17 +196,27 @@ justify-content: top;
   grid-row: 1;
   color: #ffffff;
   font-family: "pixel_font";
-  font-size: 4vh;
+  font-size: 3.5vh;
   width: 28vh;
   overflow-wrap: anywhere;
   line-height: 3.5vh;
   filter: opacity(60%);
-  margin-left: 2vh;
+  margin-left: 2.2vh;
+  filter: drop-shadow(0px 0px 20px rgba(255,255,255,0.5));
   
 }
 .Multiplier_UI
 {
-  max-width: 25vh;
+  max-width: 22vh;
+  grid-column: 1;
+  grid-row: 1;
+  z-index: 1;
+}
+.multiplier_value
+{
+  grid-column: 1;
+  grid-row: 1;
+  z-index: 1;
 }
 
 body::before {
@@ -206,12 +224,11 @@ body::before {
   width: 100vw;
   height: 100vh;
   position: fixed;
-  background-image: url('assets/background4.png');
+  background-image: url('assets/background5.jpg');
   background-size: contain;
   background-color: black;
   background-position: top center;
   background-repeat: no-repeat;
-  filter: hue-rotate(45deg);
 
   z-index: -1;
 }
@@ -274,7 +291,6 @@ body::before {
   grid-column: 1;
   grid-row: 1;
   color: #ffffff;
-  filter: opacity(60%);
   font-family: "pixel_font";
   margin-left: 1vh;
   width: 56vh;
@@ -321,26 +337,29 @@ body::before {
     border: 0.5vh solid white;
     background-color: transparent;
     border-radius:2.5vh;
-    height: 5vh;
-    width: 15vh;
+    height: 4.5vh;
+    width: 13.5vh;
     max-width: 30vw;
     font-family: "pixel_font";
     color: white;
-    font-size: 2.7vh;
+    font-size: 2.4vh;
+    filter: drop-shadow(0px 0px 20px rgba(255,255,255,0.5));
+    text-shadow: 0px 0px 20px rgba(255,255,255,0.5);
   }
 .upgrade_declare
 {
-  font-size: 3.5vh;
+  font-size: 2.7vh;
   text-align: center;
   color: #A188FF;
-  margin-top: -0.1vh;
+  margin-top: 0.5vh;
   white-space: nowrap;
   margin-bottom: 0.1vh;
+  filter: drop-shadow(0px 0px 20px rgba(161,128,255,0.5));
 }
 .price_win_chance
 {
  font-family: "pixel_font";
- font-size: 2vh;
+ font-size: 1.5vh;
  margin: 0.25vh;
  margin-bottom: 0.25vh;
  overflow-wrap: normal;
@@ -361,7 +380,9 @@ body::before {
   margin-top: 0vh;
   margin-left: 0;
   height: 13vh;
-  font-size: 13vh;
+  font-size: 12vh;
+  width: 18vh ;
+  text-shadow: 0px 0px 40px rgba(255,255,255,0.5);
 
   margin-bottom: 1vh;
 }
@@ -396,7 +417,7 @@ body::before {
   margin-right: 2vh;
   height: 100%;
   margin-top: -1vh;
-  content: ;
+  text-shadow: 0px 0px 30px rgba(255,255,255,0.5) ;
 }
 .UI_column_1
 {
@@ -415,10 +436,11 @@ body::before {
 }
 .in_hand_cash
 {
-  font-size: 3.2vh;
+  font-size: 3vh;
   width: 90%;
-  margin-top: 1.5vh;
+  margin-top: 1.3vh;
   color: #FFbbbb;
+   text-shadow: 0px 0px 30px rgba(255,192,192,0.5) ;
 }
 .arrow_page
 {
@@ -427,7 +449,7 @@ body::before {
   background:transparent;
   border: none;
   color: #ffffff;
-  transform: translateY(200%);
+  transform: translateY(190%);
 }
 .button_div_1, .button_div_2
 {
@@ -459,5 +481,82 @@ body::before {
   100%
   {
     transform: rotate(0deg);
+  }
+}
+#alert_overlay
+{
+  z-index: 5;
+  background-color: rgba(0, 0, 0, 0.8);
+  position: fixed;
+  font-size: 25vh;
+  height: 100vh;
+  width: 100vw;
+  top: 0;
+  right: 0;
+  display: grid;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  grid-area: 1/1;
+}
+.choice_background
+{
+  height: 60vh;
+  top: 0;
+  left: 100%;
+  z-index: 6;
+  grid-row: 1;
+  grid-column: 1;
+}
+.choice_background img
+{
+  height: 60vh;
+  animation: fall 0.5s ease-out;
+}
+.choice_html_wrapper
+{
+  font-size: 3vh;
+  color: white;
+  z-index: 7;
+  grid-row: 1;
+  grid-column: 1;
+  height: 60vh;
+  width: 49vh ;
+  transform: translateY(47.5%) translateX(3.5%);
+}
+.choice_html
+{
+  height: 30vh;
+background-color: red;
+filter: drop-shadow(0px 0px 6px #8888ff);
+animation: fall2 0.1s ease-out;
+opacity: 1;
+}
+@keyframes fall {
+  0%
+  {
+    transform: translateY(-100%);
+  }
+  50%
+  {
+    transform: translateY(0%);
+  }
+  75%
+  {
+    transform: translateY(-10%);
+  }
+  100%
+  {
+    transform: translateY(0%);
+  }
+}
+@keyframes fall2 {
+  0%
+  {
+    transform:scaleY(0%)
+  }
+  100%
+  {
+    transform: scaleY(100%);
   }
 }
