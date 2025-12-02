@@ -1,14 +1,13 @@
-
+Decimal.set({precision:20, crypto: true, toExpPos:10,}); 
 const In_hand=document.getElementById("total_amount");
 const price=document.getElementById("win_chance_price");
 const win_percentage=document.getElementById("win_percentage");
 const bet_amount=document.getElementById("bet-amount");
 win_percentage.innerHTML=`${game_data.base_win_chance+level_data.win_chance_change}%`;
 price.innerHTML=`${level_data.win_chance_price}`
-In_hand.innerHTML=`${game_data.total_balance}$`;
-Decimal.set({precision:20, crypto: true, toExpPos:10});                         // a cryptographically secure random number generator, cause why not?
+In_hand.innerHTML=`${game_data.total_balance}$`;                        // a cryptographically secure random number generator, cause why not?
 console.log(Decimal.random(20));
-y=0;
+y=new Decimal('0').toSD(1);
 Decimal.set({ precision: 10 });
 function OnClickBigButton()
 {
@@ -16,7 +15,7 @@ function OnClickBigButton()
     var random=Decimal.random()*100;
     if(random<=(game_data.base_win_chance+level_data.win_chance_change+50))
     {
-        game_data.bet_amount=Decimal.pow(y+1,2); 
+        game_data.bet_amount=Decimal.mul(y,2); 
         console.log(game_data.base_win_chance+level_data.win_chance_change);   
     }
     else
@@ -78,14 +77,16 @@ function OnClickWinChanceUpgradeButton()
         win_percentage.innerHTML=`${game_data.base_win_chance+level_data.win_chance_change}%`;
         level_data.win_chance_price=level_data.win_chance_price*2;
         price.innerHTML=`${level_data.win_chance_price}`;
-        In_hand.innerHTML=`${game_data.total_balance}$`;
+        x=new Decimal(game_data.total_balance);
+        In_hand.innerHTML=`${x.toSD(10)}$`;
     }
 }
 
 function OnClickWithdrawButton()
 {
     game_data.total_balance=Decimal.add(game_data.total_balance,game_data.bet_amount);
-    In_hand.innerHTML=`${game_data.total_balance}$`;
+    x=new Decimal(game_data.total_balance);
+    In_hand.innerHTML=`${x.toSD(10)}$`;
     game_data.bet_amount=0;
     bet_amount.innerHTML=`${game_data.bet_amount}$`;
 

@@ -61,8 +61,6 @@ justify-content:flex-start;
   display: flex;
   width: 100%;
   height: auto;
-  filter: brightness(80%);
-  filter: saturate(90%);
   animation: oscillate 0.25s linear;
 }
 .top_panel_img
@@ -96,8 +94,8 @@ transform: scaleX(122%) scaleY(108%);
   width: 22vh;
   height: 22vh;
   z-index: 2;
-  margin-top: 0.4vh;
-  margin-left: 0.075vh;
+  margin-top: 0.5vh;
+  margin-left: 0.12vh;
   grid-column: 1;
   grid-row: 1;
 
@@ -130,12 +128,13 @@ transform: scaleX(122%) scaleY(108%);
 {
   flex: 1;
   flex-direction: column;
-  display: flex;
+  display: none;
   width: 10vh;
   right: 0%;
   height: 52vh;
   align-items: flex-end;
   justify-content:center;
+
   
 }
 .beautifier-1
@@ -202,7 +201,7 @@ justify-content: top;
   line-height: 3.5vh;
   filter: opacity(60%);
   margin-left: 2.2vh;
-  filter: drop-shadow(0px 0px 20px rgba(255,255,255,0.5));
+  filter: drop-shadow(0px 0px 4px rgba(255,255,255,0.3));
   
 }
 .Multiplier_UI
@@ -343,8 +342,8 @@ body::before {
     font-family: "pixel_font";
     color: white;
     font-size: 2.4vh;
-    filter: drop-shadow(0px 0px 20px rgba(255,255,255,0.5));
-    text-shadow: 0px 0px 20px rgba(255,255,255,0.25);
+    filter: drop-shadow(0px 0px 4px rgba(255,255,255,0.3));
+    text-shadow: 0px 0px 4px rgba(255,255,255,0.3);
   }
 .upgrade_declare
 {
@@ -355,7 +354,7 @@ body::before {
   white-space: nowrap;
   margin-bottom: 0.1vh;
   animation: meander2 1.5s ease-out infinite;
-  filter: drop-shadow(0px 0px 20px rgba(161,128,255,0.5));
+  filter: drop-shadow(0px 0px 4px rgba(128,255,128,0.3));
 }
 .price_win_chance
 {
@@ -375,8 +374,8 @@ body::before {
   margin-top: 0.5vh;
   max-height: 80%;
   width: 58vh;
+  background-color: #121220;
   transform: translateX(-2%);
-  background-color: #330133;
 }
 #win_percentage
 {
@@ -386,7 +385,7 @@ body::before {
   font-size: 12vh;
   width: 18vh ;
   animation: meander 1.5s ease-out infinite;
-  text-shadow: 0px 0px 40px rgba(255,255,255,0.5);
+  text-shadow: 0px 0px 8px rgba(255,255,255,0.3);
 
   margin-bottom: 1vh;
 }
@@ -421,7 +420,7 @@ body::before {
   margin-right: 2vh;
   height: 100%;
   margin-top: -1vh;
-  text-shadow: 0px 0px 30px rgba(255,255,255,0.5) ;
+  text-shadow: 0px 0px 30px rgba(255,255,255,0.1) ;
 }
 .UI_column_1
 {
@@ -436,9 +435,9 @@ body::before {
   margin-left: 2vh;
   margin-top: 0.5vh;
   transform: scaleX(110%) translateX(2.5%) translateY(-5%);
-  background-color: rgba(0, 255, 0, 0.02);
-  filter: drop-shadow(0px 0px 20px rgba(128,255,128,0.5));
-  text-shadow: 0px 0px 20px rgba(128,255,128,0.25);
+  background-color: rgba(0, 255, 0, 0.00);
+  filter: drop-shadow(0px 0px 4px rgba(128,255,128,0.25));
+  text-shadow: 0px 0px 4px rgba(128,255,128,0.2);
 }
 .in_hand_cash
 {
@@ -446,8 +445,8 @@ body::before {
   height: 3.7vh;
   transform: translateY(2.6vh) scaleX(103%);
   color: #FFFFFF;
-  background-color: #330133;
-   text-shadow: 0px 0px 30px rgba(255,192,192,0.5) ;
+  background-color: #121220;
+   text-shadow: 0px 0px 4px rgba(255,192,192,0.5) ;
 }
 .arrow_page
 {
@@ -604,4 +603,12 @@ opacity: 1;
   {
     transform: translateY(0%) translateX(0%);
   }
+}
+.UI_button_1:active:hover
+{
+  background-color: rgba(255,255,255,0.8);
+}
+#withdraw:active:hover
+{
+  background-color: #88ff88;
 }
